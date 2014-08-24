@@ -30,7 +30,7 @@ Alternatively, install Qt Creator and open the `caix-qt.pro` file.
 
 An executable named `CAIx-qt` will be built.
 
-* Note: if u get a leveldb error run the following commands:
+Note: if u get a leveldb error run the following commands:
 
 ::
 	cd ./src/leveldb
