@@ -49,7 +49,7 @@ Windows build instructions:
 Mac OS X
 --------
 
-- Install XCode and the Apple Developer tools
+- Install XCode and the Command Line Developer tools
 
 - Download and install `MacPorts`_.
 
