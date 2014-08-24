@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>tutoStackDialog</class>
+ <widget class="QDialog" name="tutoStackDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>834</width>
+    <height>534</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1740</width>
+    <height>798</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>How to Stake</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">color:#33363b; font-size:12px; font-family:&quot;Open Sans Bold&quot;;background-color:#fbf9f6;</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout_2">
+   <item>
+    <widget class="QLabel" name="label_4">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Ignored">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="pixmap">
+      <pixmap>:/images/about</pixmap>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QFrame" name="frame">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="sizeConstraint">
+         <enum>QLayout::SetFixedSize</enum>
+        </property>
+        <property name="leftMargin">
+         <number>1</number>
+        </property>
+        <property name="topMargin">
+         <number>1</number>
+        </property>
+        <property name="rightMargin">
+         <number>1</number>
+        </property>
+        <property name="bottomMargin">
+         <number>1</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>267</height>
+           </size>
+          </property>
+          <property name="cursor">
+           <cursorShape>IBeamCursor</cursorShape>
+          </property>
+          <property name="text">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;CAIx version: &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="textInteractionFlags">
+           <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="versionLabel">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="cursor">
+           <cursorShape>IBeamCursor</cursorShape>
+          </property>
+          <property name="text">
+           <string notr="true">1.1.0.0</string>
+          </property>
+          <property name="textFormat">
+           <enum>Qt::RichText</enum>
+          </property>
+          <property name="textInteractionFlags">
+           <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>450</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;As you may already know, CAIx is a 100% Proof-of-Stake (PoS) coin.&lt;/p&gt;&lt;p&gt;For those who don't really know what that means, here's a little explanation.&lt;/p&gt;&lt;p&gt;Your coins have what we call a &lt;span style=&quot; font-style:italic;&quot;&gt;coin-age &lt;/span&gt;they start gaining age if they don't move during &lt;span style=&quot; font-weight:600;&quot;&gt;8-10 hours&lt;/span&gt; in your wallet, your &lt;span style=&quot; font-style:italic;&quot;&gt;stake weight&lt;/span&gt; is the cumulated coin age you have. Before those 8-10 hours, coins don't get matured so you won't be able to hit a Stake Block.&lt;/p&gt;&lt;p&gt;Your coins always gain coin-age even if your wallet is closed. But to hit a Stake Block you need to have your wallet open.&lt;/p&gt;&lt;p&gt;To see how much time is needed to hit a stake block just hover the lightning icon in the wallet it will tell you the expected time. But beware, like POW blocks, POS blocks are a bit random so expected time may be lower or higher.&lt;/p&gt;&lt;p&gt;This is when your coin-age is important. The more cumulated coin-age you got, the more chances you have of hitting a stake block. Once you hit this block and gain interest, coins which have been used have their coin-age reset, are moved to stake and blocked for 500 blocks.&lt;/p&gt;&lt;p&gt;Interest is fixed at 5% per year, but since coin start gaining age 8-10 hours after with compound interest this percentage is much higher.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Some options available to handle day to day staking :&lt;/span&gt;&lt;/p&gt;&lt;p&gt;In &lt;span style=&quot; font-style:italic;&quot;&gt;settings-&amp;gt;options&lt;/span&gt; you can set a reserve balance (the amount of coins u don't want to be staking, they'll be available to spend 24/7)&lt;br/&gt;In &lt;span style=&quot; font-style:italic;&quot;&gt;settings-&amp;gt;options-&amp;gt;display&lt;/span&gt; you can tick coin control, so you can control what coin you send (don't send old coins)&lt;br/&gt;In &lt;span style=&quot; font-style:italic;&quot;&gt;settings&lt;/span&gt; you can unlock wallet for staking only if you encrypted it.&lt;/p&gt;&lt;p&gt;&lt;b&gt;If you want to get CAIx with your mining equipment, you can point your miners to our multipool: &lt;a href=&quot;http://www.thepool.pw/caix&quot;&gt;thepool.pw/caix&lt;/a&gt;.&lt;/b&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+       <property name="textInteractionFlags">
+        <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDialogButtonBox" name="buttonBox">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="standardButtons">
+        <set>QDialogButtonBox::Ok</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>tutoStackDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>360</x>
+     <y>308</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>tutoStackDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>428</x>
+     <y>308</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
