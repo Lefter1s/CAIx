@@ -17,6 +17,8 @@ distribution are installed, for Debian and Ubuntu these are:
         libboost-filesystem-dev libboost-program-options-dev libboost-thread-dev \
         libssl-dev libdb++-dev
 
+Secondly, download our latest github sources and navigate to the created folder in your terminal using cd.
+
 then execute the following:
 
 ::
@@ -27,6 +29,17 @@ then execute the following:
 Alternatively, install Qt Creator and open the `caix-qt.pro` file.
 
 An executable named `CAIx-qt` will be built.
+
+* Note: if u get a leveldb error run the following commands:
+
+::
+	cd ./src/leveldb
+	sudo chmod +x build_detect_platforms
+	sudo make libleveldb.a liblevelmeme.a
+	cd ../..
+	
+And run the qmake and make commands again.
+	
 
 
 Windows
@@ -61,9 +74,21 @@ Mac OS X
 	sudo port install boost db48@+no_java openssl miniupnpc autoconf pkgconfig automake libtool 
 	sudo port install qt5-mac qrencode protobuf-cpp
 
-- Clone our latest github sources into a folder and run qmake and make inside that folder
+- Clone our latest github sources into a folder and navigate to that folder in your terminal by using cd.
+
+- run qmake and make
 
 .. _`MacPorts`: http://www.macports.org/install.php
+
+* Note: if u get a leveldb error run the following commands:
+
+::
+	cd ./src/leveldb
+	sudo chmod +x build_detect_platforms
+	sudo make libleveldb.a liblevelmeme.a
+	cd ../..
+	
+And run the qmake and make commands again.
 
 
 Build configuration options
