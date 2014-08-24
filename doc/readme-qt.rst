@@ -33,6 +33,7 @@ An executable named `CAIx-qt` will be built.
 Note: if u get a leveldb error run the following commands:
 
 ::
+
 	cd ./src/leveldb
 	sudo chmod +x build_detect_platforms
 	sudo make libleveldb.a liblevelmeme.a
