@@ -81,9 +81,10 @@ Mac OS X
 
 .. _`MacPorts`: http://www.macports.org/install.php
 
-* Note: if u get a leveldb error run the following commands:
+Note: if u get a leveldb error run the following commands:
 
 ::
+
 	cd ./src/leveldb
 	sudo chmod +x build_detect_platforms
 	sudo make libleveldb.a liblevelmeme.a
