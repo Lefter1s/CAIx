@@ -13,7 +13,7 @@ greaterThan(QT_MAJOR_VERSION, 4) {
 }
 
 USE_IPV6=-
-USE_UPNP=1
+USE_UPNP=-
 USE_QRCODE=1
 
 win32:BOOST_LIB_SUFFIX=-mgw49-mt-s-1_55
@@ -25,8 +25,8 @@ win32:OPENSSL_INCLUDE_PATH=C:/deps/openssl-1.0.1i/include
 win32:OPENSSL_LIB_PATH=C:/deps/openssl-1.0.1i/
 win32:MINIUPNPC_INCLUDE_PATH=C:/deps/
 win32:MINIUPNPC_LIB_PATH=C:/deps/miniupnpc
-win32:QRENCODE_INCLUDE_PATH=C:/deps/qrencode-3.4.3
-win32:QRENCODE_LIB_PATH=C:/deps/qrencode-3.4.3/.libs
+win32:QRENCODE_INCLUDE_PATH=C:/deps/qrencode-3.4.4
+win32:QRENCODE_LIB_PATH=C:/deps/qrencode-3.4.4/.libs
 
 macx:BOOST_INCLUDE_PATH=/opt/local/include/boost
 macx:BOOST_LIB_PATH=/opt/local/lib
@@ -481,7 +481,7 @@ macx:QMAKE_CXXFLAGS_THREAD += -pthread
 # Set libraries and includes at end, to use platform-defined defaults if not overridden
 INCLUDEPATH += $$BOOST_INCLUDE_PATH $$BDB_INCLUDE_PATH $$OPENSSL_INCLUDE_PATH $$QRENCODE_INCLUDE_PATH
 LIBS += $$join(BOOST_LIB_PATH,,-L,) $$join(BDB_LIB_PATH,,-L,) $$join(OPENSSL_LIB_PATH,,-L,) $$join(QRENCODE_LIB_PATH,,-L,)
-LIBS += -lssl -lcrypto -ldb_cxx$$BDB_LIB_SUFFIX
+LIBS += -lssl -lcrypto -ldb_cxx$$BDB_LIB_SUFFIX -static
 # -lgdi32 has to happen after -lcrypto (see  #681)
 win32:LIBS += -lws2_32 -lshlwapi -lmswsock -lole32 -loleaut32 -luuid -lgdi32
 LIBS += -lboost_system$$BOOST_LIB_SUFFIX -lboost_filesystem$$BOOST_LIB_SUFFIX -lboost_program_options$$BOOST_LIB_SUFFIX -lboost_thread$$BOOST_THREAD_LIB_SUFFIX
