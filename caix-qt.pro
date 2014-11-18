@@ -1,6 +1,6 @@
 TEMPLATE = app
 TARGET = CAIx-qt
-VERSION = 1.1.1.1
+VERSION = 1.1.2.1
 INCLUDEPATH += src src/json src/qt
 QT += core gui network
 DEFINES += QT_GUI BOOST_THREAD_USE_LIB BOOST_SPIRIT_THREADSAFE
