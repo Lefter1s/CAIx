@@ -74,11 +74,12 @@ To use UPnP for port forwarding behind a NAT router (recommended, as more connec
 UPnP support is not compiled in by default.  
 Set USE_UPNP to a different value to control this:
 
+| **Argument**| **Info**
 |-------------|------------------------------------------------------------------------------
 | USE_UPNP=-  | no UPnP support, miniupnpc not required; 
 | USE_UPNP=0  | (the default) built with UPnP, support turned off by default at runtime;
 | USE_UPNP=1  | build with UPnP support turned on by default at runtime.  
-a
+
 
 Notification support for recent (k)ubuntu versions
 ---------------------------------------------------
