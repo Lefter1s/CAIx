@@ -49,14 +49,14 @@ Mac OS X
 --------
 
 - Install XCode and the Command Line Developer tools
-- Download and install [MacPorts](http://www.macports.org/install.php).
+- Download and install [MacPorts](http://www.macports.org/install.php).  
 - Execute the following commands in a terminal to get the dependencies:
 
 	sudo port selfupdate  
 	sudo port install boost db48@+no_java openssl miniupnpc autoconf pkgconfig automake libtool   
 	sudo port install qt5-mac qrencode protobuf-cpp
 
-- Clone our latest github sources into a folder and navigate to that folder in your terminal by using cd.
+- Clone our latest github sources into a folder and navigate to that folder in your terminal by using cd  
 - run qmake and make
 
 Note: if u get a leveldb error run the following commands:
@@ -102,12 +102,12 @@ FreeDesktop notification interface through DBUS using the following qmake option
 Generation of QR codes
 -----------------------
 
-libqrencode may be used to generate QRCode images for payment requests. 
+qrencode may be used to generate QRCode images for payment requests. 
 Pass the USE_QRCODE lag to qmake to control this:
 
 | **Argument**  | **Info**
 |---------------|------------------------------------------------------------------------------
-| USE_QRCODE=0  | No QRCode support - libarcode not required 
+| USE_QRCODE=0  | No QRCode support - qrencode not required 
 | USE_QRCODE=1  | (Always enabled with our latest wallet) QRCode support enabled
 
 
