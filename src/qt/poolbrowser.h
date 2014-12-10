@@ -48,25 +48,25 @@ public:
     void refreshValueLabel(double actualValue, QLabel *label, double newDouble, const QString &suffix, QString newStr);
     void refreshUSDLabel(QLabel *label, double actualValue, double newDouble);
 private:
-//    void setupBittrexGraphs();
-//    void setupBittrexTabSlots();
+    void setupBittrexGraphs();
+    void setupBittrexTabSlots();
 
-    void setupMintPalGraphs();
-    void setupMintPalTabSlots();
+//    void setupMintPalGraphs();
+//    void setupMintPalTabSlots();
 
     void setupCryptsyGraphs();
     void setupCryptsyTabSlots();
 
     void getRequest( const QString &url );
 
-//    void parseBittrexSummary(QNetworkReply *replay);
+    void parseBittrexSummary(QNetworkReply *replay);
     void parseCurrencyUSD(QNetworkReply *replay);
-//    void parseBittrexOrders(QNetworkReply *replay);
-//    void parseBittrexHistory(QNetworkReply *replay);
+    void parseBittrexOrders(QNetworkReply *replay);
+    void parseBittrexHistory(QNetworkReply *replay);
 
-    void parseMintPalSummary(QNetworkReply *replay);
-    void parseMintPalOrders(QNetworkReply *replay);
-    void parseMintPalHistory(QNetworkReply *replay);
+//    void parseMintPalSummary(QNetworkReply *replay);
+//    void parseMintPalOrders(QNetworkReply *replay);
+//    void parseMintPalHistory(QNetworkReply *replay);
 
     void parseCryptsySummary(QNetworkReply *replay);
     void parseCryptsyOrders(QNetworkReply *replay);
@@ -104,8 +104,8 @@ public slots:
     void downloadMintPalMarketData();
     void downloadCryptsyMarketData();
 
-//    void openBittrexPage();
-    void openMintPalPage();
+    void openBittrexPage();
+//    void openMintPalPage();
     void openCryptsyPage();
     void egaldo();
 

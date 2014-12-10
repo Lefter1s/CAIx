@@ -81,10 +81,10 @@
      <widget class="QLabel" name="label_31">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>5</y>
+        <x>0</x>
+        <y>0</y>
         <width>111</width>
-        <height>21</height>
+        <height>31</height>
        </rect>
       </property>
       <property name="text">
@@ -94,7 +94,7 @@
      <widget class="QLineEdit" name="egals">
       <property name="geometry">
        <rect>
-        <x>130</x>
+        <x>90</x>
         <y>5</y>
         <width>121</width>
         <height>21</height>
@@ -104,7 +104,7 @@
      <widget class="QLabel" name="egald">
       <property name="geometry">
        <rect>
-        <x>320</x>
+        <x>280</x>
         <y>0</y>
         <width>181</width>
         <height>31</height>
@@ -117,8 +117,8 @@
      <widget class="QPushButton" name="egal">
       <property name="geometry">
        <rect>
-        <x>260</x>
-        <y>6</y>
+        <x>220</x>
+        <y>5</y>
         <width>51</width>
         <height>20</height>
        </rect>
@@ -134,17 +134,20 @@
    </item>
    <item row="1" column="0">
     <widget class="QTabWidget" name="All">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="styleSheet">
       <string notr="true"/>
      </property>
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="tabMainMintPal">
+     <widget class="QWidget" name="tabMainBittrex">
       <attribute name="title">
-       <string>Mintpal</string>
+       <string>Bittrex</string>
       </attribute>
-      <widget class="QTabWidget" name="tabMintPal">
+      <widget class="QTabWidget" name="tabBittrex">
        <property name="geometry">
         <rect>
          <x>0</x>
@@ -162,11 +165,11 @@
        <property name="currentIndex">
         <number>0</number>
        </property>
-       <widget class="QWidget" name="mainsMintPal">
+       <widget class="QWidget" name="mainsBittrex">
         <attribute name="title">
          <string>Main</string>
         </attribute>
-        <widget class="QWidget" name="view1_2" native="true">
+        <widget class="QWidget" name="view1_4" native="true">
          <property name="geometry">
           <rect>
            <x>0</x>
@@ -181,7 +184,7 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <widget class="QWidget" name="Last_4" native="true">
+         <widget class="QWidget" name="Last_10" native="true">
           <property name="geometry">
            <rect>
             <x>140</x>
@@ -193,7 +196,7 @@
           <property name="styleSheet">
            <string notr="true">border-right:1px solid black;</string>
           </property>
-          <widget class="QLabel" name="label_7">
+          <widget class="QLabel" name="label_10">
            <property name="geometry">
             <rect>
              <x>10</x>
@@ -209,7 +212,7 @@
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Ask&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
           </widget>
-          <widget class="QLabel" name="askBTCMintPalLabel">
+          <widget class="QLabel" name="askBTCBittrex">
            <property name="geometry">
             <rect>
              <x>10</x>
@@ -225,7 +228,7 @@
             <string>0.00000000 BTC</string>
            </property>
           </widget>
-          <widget class="QLabel" name="askUSDMintPalLabel">
+          <widget class="QLabel" name="askUSDBittrex">
            <property name="geometry">
             <rect>
              <x>10</x>
@@ -242,7 +245,7 @@
            </property>
           </widget>
          </widget>
-         <widget class="QWidget" name="Last_5" native="true">
+         <widget class="QWidget" name="Last_11" native="true">
           <property name="geometry">
            <rect>
             <x>270</x>
@@ -251,7 +254,7 @@
             <height>81</height>
            </rect>
           </property>
-          <widget class="QLabel" name="label_12">
+          <widget class="QLabel" name="label_14">
            <property name="geometry">
             <rect>
              <x>10</x>
@@ -267,7 +270,7 @@
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Bid&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
           </widget>
-          <widget class="QLabel" name="bidBTCMintPalLabel">
+          <widget class="QLabel" name="bidBTCBittrex">
            <property name="geometry">
             <rect>
              <x>10</x>
@@ -280,7 +283,7 @@
             <string>0.00000000 BTC</string>
            </property>
           </widget>
-          <widget class="QLabel" name="bidUSDMintPalLabel">
+          <widget class="QLabel" name="bidUSDBittrex">
            <property name="geometry">
             <rect>
              <x>10</x>
@@ -294,7 +297,7 @@
            </property>
           </widget>
          </widget>
-         <widget class="QLabel" name="label_26">
+         <widget class="QLabel" name="label_30">
           <property name="geometry">
            <rect>
             <x>490</x>
@@ -307,7 +310,7 @@
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Last 24 hours&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QWidget" name="Last_6" native="true">
+         <widget class="QWidget" name="Last_12" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -319,7 +322,7 @@
           <property name="styleSheet">
            <string notr="true">border-right:1px solid black;</string>
           </property>
-          <widget class="QLabel" name="label_2">
+          <widget class="QLabel" name="label_3">
            <property name="geometry">
             <rect>
              <x>10</x>
@@ -335,7 +338,7 @@
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Last Price&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
           </widget>
-          <widget class="QLabel" name="lastBTCMintPalLabel">
+          <widget class="QLabel" name="lastBTCBittrex">
            <property name="geometry">
             <rect>
              <x>10</x>
@@ -351,7 +354,7 @@
             <string>0.00000000 BTC</string>
            </property>
           </widget>
-          <widget class="QLabel" name="lastUSDMintPalLabel">
+          <widget class="QLabel" name="lastUSDBittrex">
            <property name="geometry">
             <rect>
              <x>10</x>
@@ -368,10 +371,10 @@
            </property>
           </widget>
          </widget>
-         <widget class="QLabel" name="yestMintpal">
+         <widget class="QLabel" name="yest">
           <property name="geometry">
            <rect>
-            <x>130</x>
+            <x>90</x>
             <y>20</y>
             <width>161</width>
             <height>31</height>
@@ -381,7 +384,7 @@
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20px; font-weight:600;&quot;&gt;+ 0 %&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QWidget" name="widget_7" native="true">
+         <widget class="QWidget" name="widget_9" native="true">
           <property name="geometry">
            <rect>
             <x>480</x>
@@ -390,7 +393,7 @@
             <height>161</height>
            </rect>
           </property>
-          <widget class="QWidget" name="gridLayoutWidget_2">
+          <widget class="QWidget" name="gridLayoutWidget_4">
            <property name="geometry">
             <rect>
              <x>10</x>
@@ -399,79 +402,72 @@
              <height>141</height>
             </rect>
            </property>
-           <layout class="QGridLayout" name="gridLayout_3">
-            <item row="3" column="0">
-             <widget class="QLabel" name="label_15">
+           <layout class="QGridLayout" name="gridLayout_5">
+            <item row="2" column="0">
+             <widget class="QLabel" name="label_16">
               <property name="text">
                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;High&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="QLabel" name="volumeUSDMintPalLabel">
+             <widget class="QLabel" name="volumeUSDBittrex">
               <property name="text">
                <string>0000 $</string>
               </property>
              </widget>
             </item>
-            <item row="0" column="1">
-             <widget class="QLabel" name="volumesBTCMintPalLabel">
-              <property name="text">
-               <string>0</string>
-              </property>
-             </widget>
-            </item>
-            <item row="4" column="0">
-             <widget class="QLabel" name="label_21">
+            <item row="3" column="0">
+             <widget class="QLabel" name="label_22">
               <property name="text">
                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Low&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
              </widget>
             </item>
-            <item row="3" column="1">
-             <widget class="QLabel" name="highMintPalLabel">
+            <item row="0" column="1">
+             <widget class="QLabel" name="volumeBTCBittrex">
+              <property name="text">
+               <string>0</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QLabel" name="highBittrex">
               <property name="text">
                <string>0.000000000</string>
               </property>
              </widget>
             </item>
             <item row="0" column="0">
-             <widget class="QLabel" name="label_19">
+             <widget class="QLabel" name="label_23">
               <property name="text">
                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Volume BTC&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
              </widget>
             </item>
-            <item row="4" column="1">
-             <widget class="QLabel" name="lowMintPalLabel">
+            <item row="3" column="1">
+             <widget class="QLabel" name="lowBittrex">
               <property name="text">
                <string>0.000000000</string>
               </property>
              </widget>
             </item>
             <item row="1" column="0">
-             <widget class="QLabel" name="label_20">
+             <widget class="QLabel" name="label_24">
               <property name="text">
                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Volume USD&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <widget class="QLabel" name="label_46">
-              <property name="text">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Last 50 trades&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
              </widget>
             </item>
            </layout>
           </widget>
          </widget>
-         <widget class="QLabel" name="label_8">
+         <widget class="QLabel" name="label_11">
           <property name="geometry">
            <rect>
             <x>11</x>
             <y>21</y>
-            <width>109</width>
+            <width>70</width>
             <height>25</height>
            </rect>
           </property>
@@ -485,10 +481,10 @@
            <string notr="true">color:#33363b; font-size:12px; font-family:&quot;Open Sans Bold&quot;;background-color:#fbf9f6;</string>
           </property>
           <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20px; font-weight:600&quot;&gt;MintPal&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20px; font-weight:600&quot;&gt;Bittrex&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QLabel" name="label_32">
+         <widget class="QLabel" name="label_33">
           <property name="geometry">
            <rect>
             <x>0</x>
@@ -504,7 +500,7 @@
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span&gt;Sell Orders:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QTreeWidget" name="buyTableMintPal">
+         <widget class="QTreeWidget" name="buyQuantityTable">
           <property name="geometry">
            <rect>
             <x>490</x>
@@ -517,10 +513,10 @@
            <number>0</number>
           </property>
           <property name="columnCount">
-           <number>3</number>
+           <number>2</number>
           </property>
           <attribute name="headerDefaultSectionSize">
-           <number>110</number>
+           <number>150</number>
           </attribute>
           <attribute name="headerMinimumSectionSize">
            <number>50</number>
@@ -535,13 +531,8 @@
             <string>Amount</string>
            </property>
           </column>
-          <column>
-           <property name="text">
-            <string>Total</string>
-           </property>
-          </column>
          </widget>
-         <widget class="QTreeWidget" name="sellTableMintPal">
+         <widget class="QTreeWidget" name="sellQuantityTable">
           <property name="geometry">
            <rect>
             <x>0</x>
@@ -563,13 +554,13 @@
            <bool>true</bool>
           </property>
           <property name="columnCount">
-           <number>3</number>
+           <number>2</number>
           </property>
           <attribute name="headerDefaultSectionSize">
-           <number>110</number>
+           <number>150</number>
           </attribute>
           <attribute name="headerMinimumSectionSize">
-           <number>50</number>
+           <number>110</number>
           </attribute>
           <attribute name="headerShowSortIndicator" stdset="0">
            <bool>false</bool>
@@ -584,13 +575,8 @@
             <string>Amount</string>
            </property>
           </column>
-          <column>
-           <property name="text">
-            <string>Total</string>
-           </property>
-          </column>
          </widget>
-         <widget class="QLabel" name="label_34">
+         <widget class="QLabel" name="label_48">
           <property name="geometry">
            <rect>
             <x>490</x>
@@ -608,11 +594,11 @@
          </widget>
         </widget>
        </widget>
-       <widget class="QWidget" name="graphsMintPal">
+       <widget class="QWidget" name="graphsBittrex">
         <attribute name="title">
          <string>Graphs</string>
         </attribute>
-        <widget class="QFrame" name="view2_2">
+        <widget class="QFrame" name="view2_4">
          <property name="geometry">
           <rect>
            <x>0</x>
@@ -621,7 +607,7 @@
            <height>371</height>
           </rect>
          </property>
-         <widget class="QCustomPlot" name="priceMintPalPlot" native="true">
+         <widget class="QCustomPlot" name="pricesBittrexPlot" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -634,7 +620,7 @@
            <string notr="true">background:none;</string>
           </property>
          </widget>
-         <widget class="QLabel" name="label_9">
+         <widget class="QLabel" name="label_17">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -644,10 +630,10 @@
            </rect>
           </property>
           <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Price chart for the last 100 trades&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Price chart for the last 50 trades&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QTreeWidget" name="tradesMintPalTable">
+         <widget class="QTreeWidget" name="tradesTableBittrex">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -706,7 +692,7 @@
            </property>
           </column>
          </widget>
-         <widget class="QLabel" name="label_29">
+         <widget class="QLabel" name="label_49">
           <property name="geometry">
            <rect>
             <x>492</x>
@@ -719,7 +705,7 @@
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Order depth &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QCustomPlot" name="orderMintPalPlot" native="true">
+         <widget class="QCustomPlot" name="volumeSatoshiPlotBittrex" native="true">
           <property name="geometry">
            <rect>
             <x>492</x>
@@ -735,7 +721,20 @@
         </widget>
        </widget>
       </widget>
-      <widget class="QPushButton" name="refreshMintPalButton">
+      <widget class="QPushButton" name="bittrexButton">
+       <property name="geometry">
+        <rect>
+         <x>720</x>
+         <y>400</y>
+         <width>111</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Go to Bittrex</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="refreshBittrexButton">
        <property name="geometry">
         <rect>
          <x>832</x>
@@ -746,19 +745,6 @@
        </property>
        <property name="text">
         <string>Update Prices</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="mintPalButton">
-       <property name="geometry">
-        <rect>
-         <x>720</x>
-         <y>400</y>
-         <width>111</width>
-         <height>27</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Go to MintPal</string>
        </property>
       </widget>
      </widget>
@@ -819,6 +805,9 @@
            <width>1000</width>
            <height>682</height>
           </rect>
+         </property>
+         <property name="autoFillBackground">
+          <bool>false</bool>
          </property>
          <widget class="QWidget" name="Last_7" native="true">
           <property name="geometry">
@@ -1026,21 +1015,21 @@
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_4">
-            <item row="3" column="1">
+            <item row="2" column="1">
              <widget class="QLabel" name="highCryptsyLabel">
               <property name="text">
                <string>0.000000000</string>
               </property>
              </widget>
             </item>
-            <item row="4" column="1">
+            <item row="3" column="1">
              <widget class="QLabel" name="lowCryptsyLabel">
               <property name="text">
                <string>0.000000000</string>
               </property>
              </widget>
             </item>
-            <item row="4" column="0">
+            <item row="3" column="0">
              <widget class="QLabel" name="label_37">
               <property name="text">
                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Low&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -1062,23 +1051,9 @@
              </widget>
             </item>
             <item row="2" column="0">
-             <widget class="QLabel" name="label_45">
-              <property name="text">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Last 50 trades&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="0">
              <widget class="QLabel" name="label_36">
               <property name="text">
                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;High&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QLabel" name="volumeUSDCryptsyLabel1">
-              <property name="text">
-               <string/>
               </property>
              </widget>
             </item>
@@ -1086,6 +1061,13 @@
              <widget class="QLabel" name="label_39">
               <property name="text">
                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QLabel" name="volumeUSDCryptsyLabel">
+              <property name="text">
+               <string/>
               </property>
              </widget>
             </item>
@@ -1143,7 +1125,7 @@
            <number>3</number>
           </property>
           <attribute name="headerDefaultSectionSize">
-           <number>110</number>
+           <number>150</number>
           </attribute>
           <attribute name="headerMinimumSectionSize">
            <number>50</number>
@@ -1189,7 +1171,7 @@
            <number>3</number>
           </property>
           <attribute name="headerDefaultSectionSize">
-           <number>110</number>
+           <number>150</number>
           </attribute>
           <attribute name="headerMinimumSectionSize">
            <number>50</number>
@@ -1281,6 +1263,9 @@
           </property>
           <property name="autoScrollMargin">
            <number>16</number>
+          </property>
+          <property name="showDropIndicator" stdset="0">
+           <bool>true</bool>
           </property>
           <property name="indentation">
            <number>10</number>

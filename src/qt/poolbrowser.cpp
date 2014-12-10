@@ -23,9 +23,9 @@ const QString kCryptsyPage = "https://www.cryptsy.com/markets/view/221";
 const QString kCurrencyUSDUrl    = "http://blockchain.info/tobtc?currency=USD&value=1";
 
 // Bittrex API urls
-const QString kBittrexSummaryUrl        = "http://bittrex.com/api/v1/public/getmarketsummaries";
-const QString kBittrexOrdersUrl         = "http://bittrex.com/api/v1/public/getorderbook?market=BTC-CAIX&type=both&depth=50";
-const QString kBittrexHistoryUrl        = "http://bittrex.com/api/v1/public/getmarkethistory?market=BTC-CAIX&count=100";
+const QString kBittrexSummaryUrl        = "http://bittrex.com/api/v1.1/public/getmarketsummaries";
+const QString kBittrexOrdersUrl         = "http://bittrex.com/api/v1.1/public/getorderbook?market=BTC-CAIX&type=both&depth=50";
+const QString kBittrexHistoryUrl        = "http://bittrex.com/api/v1.1/public/getmarkethistory?market=BTC-CAIX&count=100";
 
 // MintPal API urls
 const QString kMintPalSummaryUrl    = "https://api.mintpal.com/v2/market/stats/CAIx/BTC";
@@ -91,13 +91,11 @@ PoolBrowser::PoolBrowser(QWidget *parent) :
     ui(new Ui::PoolBrowser)
 {
     ui->setupUi(this);
-//    ui->buyQuantityTable->header()->resizeSection(0,120);
-//    ui->sellQuantityTable->header()->resizeSection(0,120);
     setFixedSize(400, 420);
     this->getRequest(kCurrencyUSDUrl);
 
-//    this->setupBittrexGraphs();
-    this->setupMintPalGraphs();
+    this->setupBittrexGraphs();
+    //this->setupMintPalGraphs();
     this->setupCryptsyGraphs();
 
     this->downloadAllMarketsData();
@@ -105,44 +103,43 @@ PoolBrowser::PoolBrowser(QWidget *parent) :
     QObject::connect(&m_nam, SIGNAL(finished(QNetworkReply*)), this, SLOT(parseNetworkResponse(QNetworkReply*)));
     connect(ui->egal, SIGNAL(pressed()), this, SLOT( egaldo()));
 
-//    this->setupBittrexTabSlots();
-    this->setupMintPalTabSlots();
+    this->setupBittrexTabSlots();
+    //this->setupMintPalTabSlots();
     this->setupCryptsyTabSlots();
 }
 
-//void PoolBrowser::setupBittrexGraphs()
-//{
-//    ui->pricesBittrexPlot->addGraph();
-//    ui->pricesBittrexPlot->setBackground(Qt::transparent);
-//    ui->volumeSatoshiPlotBittrex->addGraph();
-//    ui->volumeSatoshiPlotBittrex->addGraph();
-//    ui->volumeSatoshiPlotBittrex->setBackground(Qt::transparent);
-//}
-
-//void PoolBrowser::setupBittrexTabSlots()
-//{
-//    connect(ui->refreshBittrexButton, SIGNAL(pressed()), this, SLOT( downloadBittrexMarketData()));
-//    connect(ui->bittrexButton, SIGNAL(pressed()), this, SLOT( openBittrexPage()));
-//}
-
-void PoolBrowser::setupMintPalGraphs()
+void PoolBrowser::setupBittrexGraphs()
 {
-    ui->priceMintPalPlot->addGraph();
-    ui->orderMintPalPlot->addGraph();
-    ui->orderMintPalPlot->addGraph();
+    ui->pricesBittrexPlot->addGraph();
+    ui->volumeSatoshiPlotBittrex->addGraph();
+    ui->volumeSatoshiPlotBittrex->addGraph();
 }
+
+void PoolBrowser::setupBittrexTabSlots()
+{
+    connect(ui->refreshBittrexButton, SIGNAL(pressed()), this, SLOT( downloadBittrexMarketData()));
+    connect(ui->refreshBittrexButton, SIGNAL(pressed()), this, SLOT( updateBitcoinPrice()));
+    connect(ui->bittrexButton, SIGNAL(pressed()), this, SLOT( openBittrexPage()));
+}
+
+//void PoolBrowser::setupMintPalGraphs()
+//{
+//    ui->priceMintPalPlot->addGraph();
+//    ui->orderMintPalPlot->addGraph();
+//    ui->orderMintPalPlot->addGraph();
+//}
 
 void PoolBrowser::updateBitcoinPrice()
 {
     this->getRequest(kCurrencyUSDUrl);
 }
 
-void PoolBrowser::setupMintPalTabSlots()
-{
-    connect(ui->refreshMintPalButton, SIGNAL(pressed()), this, SLOT(downloadMintPalMarketData()));
-    connect(ui->refreshMintPalButton, SIGNAL(pressed()), this, SLOT(updateBitcoinPrice()));
-    connect(ui->mintPalButton, SIGNAL(pressed()), this, SLOT(openMintPalPage()));
-}
+//void PoolBrowser::setupMintPalTabSlots()
+//{
+//    connect(ui->refreshMintPalButton, SIGNAL(pressed()), this, SLOT(downloadMintPalMarketData()));
+//    connect(ui->refreshMintPalButton, SIGNAL(pressed()), this, SLOT(updateBitcoinPrice()));
+//    connect(ui->mintPalButton, SIGNAL(pressed()), this, SLOT(openMintPalPage()));
+//}
 
 void PoolBrowser::setupCryptsyGraphs()
 {
@@ -161,8 +158,8 @@ void PoolBrowser::setupCryptsyTabSlots()
 void PoolBrowser::egaldo()
 {
     QString temps = ui->egals->text();
-    double totald = lastuG * temps.toDouble();
-    double totaldq = bitcoing.toDouble() * temps.toDouble();
+    double totald =  lastBittrex * bitcoinToUSD * temps.toDouble();
+    double totaldq = lastBittrex * temps.toDouble();
     ui->egald->setText(QString::number(totald) + " $ / "+QString::number(totaldq)+" BTC");
 }
 
@@ -190,34 +187,34 @@ void PoolBrowser::parseNetworkResponse(QNetworkReply *finished )
     }
 
 
-//    if (requestUrl == kBittrexSummaryUrl)
-//    {
-//        this->parseBittrexSummary(finished);
-//    }
-    if (requestUrl == kCurrencyUSDUrl)
+    if (requestUrl == kBittrexSummaryUrl)
+    {
+        this->parseBittrexSummary(finished);
+    }
+    else if (requestUrl == kCurrencyUSDUrl)
     {
         this->parseCurrencyUSD(finished);
     }
-//    else if (requestUrl == kBittrexOrdersUrl)
+    else if (requestUrl == kBittrexOrdersUrl)
+    {
+        this->parseBittrexOrders(finished);
+    }
+    else if (requestUrl == kBittrexHistoryUrl)
+    {
+        this->parseBittrexHistory(finished);
+    }
+//    else if (requestUrl == kMintPalSummaryUrl)
 //    {
-//        this->parseBittrexOrders(finished);
+//        this->parseMintPalSummary(finished);
 //    }
-//    else if (requestUrl == kBittrexHistoryUrl)
+//    else if (requestUrl == kMintPalOrdersUrl)
 //    {
-//        this->parseBittrexHistory(finished);
+//        this->parseMintPalOrders(finished);
 //    }
-    else if (requestUrl == kMintPalSummaryUrl)
-    {
-        this->parseMintPalSummary(finished);
-    }
-    else if (requestUrl == kMintPalOrdersUrl)
-    {
-        this->parseMintPalOrders(finished);
-    }
-    else if (requestUrl == kMintPalHistoryUrl)
-    {
-        this->parseMintPalHistory(finished);
-    }
+//    else if (requestUrl == kMintPalHistoryUrl)
+//    {
+//        this->parseMintPalHistory(finished);
+//    }
     else if (requestUrl == kCryptsySummaryUrl)
     {
         this->parseCryptsySummary(finished);
@@ -247,58 +244,62 @@ void PoolBrowser::parseCurrencyUSD(QNetworkReply *replay)
     bitcoinp = bitcoin;
 }
 
-//void PoolBrowser::parseBittrexSummary(QNetworkReply *replay)
-//{
-//    QString data = replay->readAll();
+void PoolBrowser::parseBittrexSummary(QNetworkReply *replay)
+{
+    QString data = replay->readAll();
 
-//    qDebug() << "BittrexSummary response:" << data;
+    qDebug() << "BittrexSummary response:" << data;
 
-//    QJsonParseError jsonParseError;
-//    QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8(), &jsonParseError);
-//    if (jsonResponse.isObject()) {
+    QJsonParseError jsonParseError;
+    QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8(), &jsonParseError);
+    if (jsonResponse.isObject()) {
 
-//       QJsonObject mainObject = jsonResponse.object();
-//       if (!mainObject.contains("success")
-//               && !mainObject["success"].toBool()) {
-//           return;
-//       }
+       QJsonObject mainObject = jsonResponse.object();
+       if (!mainObject.contains("success")
+               && !mainObject["success"].toBool()) {
+           return;
+       }
 
-//       if (mainObject.contains("result")) {
-//           QJsonArray resultArray = mainObject["result"].toArray();
-//           foreach (const QJsonValue &value, resultArray) {
-//               QJsonObject marketObject = value.toObject();
-//               if (marketObject.contains("MarketName")
-//                   && marketObject["MarketName"].toString() == "BTC-CAIX") {
+       if (mainObject.contains("result")) {
+           QJsonArray resultArray = mainObject["result"].toArray();
+           foreach (const QJsonValue &value, resultArray) {
+               QJsonObject marketObject = value.toObject();
+               if (marketObject.contains("MarketName")
+                   && marketObject["MarketName"].toString() == "BTC-CAIX") {
 
-//                   // Updating summary labels
-//                   highBittrex = this->refreshDoubleVarUsingField(marketObject, "High",
-//                                                                  highBittrex, ui->highBittrex);
-//                   lowBittrex = this->refreshDoubleVarUsingField(marketObject, "Low",
-//                                                                 lowBittrex, ui->lowBittrex);
+                   // Updating summary labels
+                   highBittrex = this->refreshDoubleVarUsingField(marketObject, "High",
+                                                                  highBittrex, ui->highBittrex);
+                   lowBittrex = this->refreshDoubleVarUsingField(marketObject, "Low",
+                                                                 lowBittrex, ui->lowBittrex);
 
-//                   this->refreshDoubleVarAsBTCUsingField(marketObject, "BaseVolume",
-//                                                         volumeBTCBittrex, ui->volumeBTCBittrex);
-//                   volumeBTCBittrex = this->refreshDoubleVarAsUSDUsingField(marketObject, "BaseVolume",
-//                                                                            volumeBTCBittrex, ui->volumeUSDBittrex);
+                   this->refreshDoubleVarAsBTCUsingField(marketObject, "BaseVolume",
+                                                         volumeBTCBittrex, ui->volumeBTCBittrex);
+                   volumeBTCBittrex = this->refreshDoubleVarAsUSDUsingField(marketObject, "BaseVolume",
+                                                                            volumeBTCBittrex, ui->volumeUSDBittrex);
 
-//                   this->refreshDoubleVarAsBTCUsingField(marketObject, "Last",
-//                                                         lastBittrex, ui->lastBTCBittrex);
-//                   lastBittrex = this->refreshDoubleVarAsUSDUsingField(marketObject, "Last",
-//                                                                       lastBittrex, ui->lastUSDBittrex);
+                   this->refreshDoubleVarAsBTCUsingField(marketObject, "Last",
+                                                         lastBittrex, ui->lastBTCBittrex);
+                   lastBittrex = this->refreshDoubleVarAsUSDUsingField(marketObject, "Last",
+                                                                       lastBittrex, ui->lastUSDBittrex);
+
+                   double dollargD = lastBittrex * bitcoinToUSD;
+                   dollarg = QSTRING_DOUBLE(dollargD);
+                   bitcoing = QSTRING_DOUBLE(lastBittrex);
 
 //                   volumeSCBittrex = this->refreshDoubleVarUsingField(marketObject, "Volume",
 //                                                                      volumeSCBittrex, ui->volumeSCBittrex);
 
-//                   this->refreshDoubleVarAsBTCUsingField(marketObject, "Bid",
-//                                                         bidBittrex, ui->bidBTCBittrex);
-//                   bidBittrex = this->refreshDoubleVarAsUSDUsingField(marketObject, "Bid",
-//                                                                      bidBittrex, ui->bidUSDBittrex);
+                   this->refreshDoubleVarAsBTCUsingField(marketObject, "Bid",
+                                                         bidBittrex, ui->bidBTCBittrex);
+                   bidBittrex = this->refreshDoubleVarAsUSDUsingField(marketObject, "Bid",
+                                                                      bidBittrex, ui->bidUSDBittrex);
 
-//                   qDebug() << "Refreshing ask:";
-//                   this->refreshDoubleVarAsBTCUsingField(marketObject, "Ask",
-//                                                         askBittrex, ui->askBTCBittrex);
-//                   askBittrex = this->refreshDoubleVarAsUSDUsingField(marketObject, "Ask",
-//                                                                      askBittrex, ui->askUSDBittrex);
+                   qDebug() << "Refreshing ask:";
+                   this->refreshDoubleVarAsBTCUsingField(marketObject, "Ask",
+                                                         askBittrex, ui->askBTCBittrex);
+                   askBittrex = this->refreshDoubleVarAsUSDUsingField(marketObject, "Ask",
+                                                                      askBittrex, ui->askUSDBittrex);
 
 //                   if (marketObject.contains("OpenBuyOrders")) {
 //                       ui->openBuyersBittrex->setText(QSTRING_DOUBLE(marketObject["OpenBuyOrders"].toDouble()));
@@ -307,473 +308,471 @@ void PoolBrowser::parseCurrencyUSD(QNetworkReply *replay)
 //                       ui->openSellersBittrex->setText(QSTRING_DOUBLE(marketObject["OpenSellOrders"].toDouble()));
 //                   }
 
-//                   if (marketObject.contains("PrevDay")
-//                           && marketObject.contains("Last")) {
-//                       double yesterday = marketObject["PrevDay"].toDouble();
-//                       double today = marketObject["Last"].toDouble();
+                   if (marketObject.contains("PrevDay")
+                           && marketObject.contains("Last")) {
+                       double yesterday = marketObject["PrevDay"].toDouble();
+                       double today = marketObject["Last"].toDouble();
 
-//                       double change;
-//                       if (today > yesterday) {
-//                           change = ( (today - yesterday) / today ) * 100;
-//                           this->setGreenTextForLabel("+" + QSTRING_DOUBLE(change) + "%", ui->yest);
-//                       } else {
-//                           change = ( (yesterday - today) / yesterday) * 100;
-//                           this->setRedTextForLabel("-" + QSTRING_DOUBLE(change) + "%", ui->yest);
-//                       }
-//                   }
-//               }
-//           }
-//       }
+                       double change;
+                       if (today > yesterday) {
+                           change = ( (today - yesterday) / today ) * 100;
+                           this->setGreenTextForLabel("+" + QSTRING_DOUBLE(change) + "%", ui->yest);
+                       } else {
+                           change = ( (yesterday - today) / yesterday) * 100;
+                           this->setRedTextForLabel("-" + QSTRING_DOUBLE(change) + "%", ui->yest);
+                       }
+                   }
+               }
+           }
+       }
 
-//    } else {
-//        qWarning() << "Parsing Bittrex summary failed with error: " << jsonParseError.errorString();
-//    }
-//}
-
-//void PoolBrowser::parseBittrexOrders(QNetworkReply *replay)
-//{
-//    QString data = replay->readAll();
-
-//    qDebug() << "BittrexSummary response:" << data;
-
-//    QJsonParseError jsonParseError;
-//    QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8(), &jsonParseError);
-//    if (jsonResponse.isObject()) {
-
-//       QJsonObject mainObject = jsonResponse.object();
-//       if (!mainObject.contains("success")
-//               && !mainObject["success"].toBool()) {
-//           return;
-//       }
-
-//       if (mainObject.contains("result")) {
-//           QJsonObject resultObject = mainObject["result"].toObject();
-
-//           QVector<double> volumeSell(50), satoshiSell(50);
-//           QVector<double> volumeBuy(50), satoshiBuy(50);
-
-//           if (resultObject.contains("buy")) {
-
-//               ui->buyQuantityTable->clear();
-//               ui->buyQuantityTable->setSortingEnabled(true);
-
-//               QJsonArray buyArray = resultObject["buy"].toArray();
-
-//               int i = 0;
-//               double cumulation = 0.0;
-//               foreach (const QJsonValue &order, buyArray) {
-//                    QJsonObject orderObject = order.toObject();
-//                    QTreeWidgetItem *orderItem = new QTreeWidgetItem();
-
-//                    if (orderObject.contains("Rate")) {
-//                        double rate = orderObject["Rate"].toDouble();
-//                        orderItem->setText(1, QSTRING_DOUBLE(rate));
-
-//                        double satoshi = rate * 100000000;
-
-//                        satoshiBuy[i] = satoshi;
-//                        volumeBuy[i] = cumulation;
-//                    }
-//                    if (orderObject.contains("Quantity")) {
-//                        double quantity = orderObject["Quantity"].toDouble();
-//                        orderItem->setText(0, QSTRING_DOUBLE(quantity));
-
-//                        cumulation += quantity;
-//                    }
-
-//                    ui->buyQuantityTable->addTopLevelItem(orderItem);
-//                }
-//           }
-
-//           if (resultObject.contains("sell")) {
-
-//               ui->sellQuantityTable->clear();
-//               ui->sellQuantityTable->sortByColumn(0, Qt::AscendingOrder);
-//               ui->sellQuantityTable->setSortingEnabled(true);
-
-//               QJsonArray sellArray = resultObject["sell"].toArray();
-
-//               int i = 0;
-//               double cumulation = 0.0;
-//               foreach (const QJsonValue &order, sellArray) {
-//                    QJsonObject orderObject = order.toObject();
-//                    QTreeWidgetItem *orderItem = new QTreeWidgetItem();
-
-//                    if (orderObject.contains("Rate")) {
-//                        double rate = orderObject["Rate"].toDouble();
-//                        orderItem->setText(0, QSTRING_DOUBLE(rate));
-
-//                        double satoshi = rate * 100000000;
-
-//                        satoshiSell[i] = satoshi;
-//                        volumeSell[i] = cumulation;
-//                    }
-//                    if (orderObject.contains("Quantity")) {
-//                        double quantity = orderObject["Quantity"].toDouble();
-//                        orderItem->setText(1, QSTRING_DOUBLE(quantity));
-
-//                        cumulation += quantity;
-//                    }
-//                    ui->sellQuantityTable->addTopLevelItem(orderItem);
-//                }
-//           }
-
-//           this->updateVolumeSatoshiPlot(satoshiSell, satoshiBuy, volumeSell, volumeBuy, ui->volumeSatoshiPlotBittrex);
-//       }
-
-//    } else {
-//        qWarning() << "Parsing Bittrex summary failed with error: " << jsonParseError.errorString();
-//    }
-//}
-
-//void PoolBrowser::parseBittrexHistory(QNetworkReply *replay)
-//{
-//    QString data = replay->readAll();
-
-//    qDebug() << "BittrexSummary response:" << data;
-
-//    QJsonParseError jsonParseError;
-//    QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8(), &jsonParseError);
-//    if (jsonResponse.isObject()) {
-
-//       QJsonObject mainObject = jsonResponse.object();
-//       if (!mainObject.contains("success")
-//               && !mainObject["success"].toBool()) {
-//           return;
-//       }
-
-//       if (mainObject.contains("result")) {
-//           QJsonArray resultArray = mainObject["result"].toArray();
-
-//           ui->tradesTableBittrex->clear();
-//           ui->tradesTableBittrex->setColumnWidth(0,  60);
-//           ui->tradesTableBittrex->setColumnWidth(1,  100);
-//           ui->tradesTableBittrex->setColumnWidth(2,  100);
-//           ui->tradesTableBittrex->setColumnWidth(3,  100);
-//           ui->tradesTableBittrex->setColumnWidth(4,  180);
-//           ui->tradesTableBittrex->setColumnWidth(5,  100);
-//           ui->tradesTableBittrex->setSortingEnabled(true);
-
-//           QVector<double> count(50), prices(50);
-
-//           int i = 0;
-//           foreach (const QJsonValue &tradeValue, resultArray) {
-
-//               QJsonObject tradeObject = tradeValue.toObject();
-//               QTreeWidgetItem *tradeItem = new QTreeWidgetItem();
-
-//               if (tradeObject.contains("OrderType")) {
-//                   QString typeStr = tradeObject["OrderType"].toString();
-//                   tradeItem->setText(0, typeStr);
-//               }
-//               if (tradeObject.contains("Quantity")) {
-//                   double quantity = tradeObject["Quantity"].toDouble();
-//                   tradeItem->setText(1, QSTRING_DOUBLE(quantity));
-//               }
-//               if (tradeObject.contains("Price")) {
-//                   double rate = tradeObject["Price"].toDouble();
-//                   tradeItem->setText(2, QSTRING_DOUBLE(rate));
-
-//                   count[i]  = resultArray.count() - i;
-//                   prices[i] = rate * 100000000;
-//               }
-//               if (tradeObject.contains("Total")) {
-//                   double total = tradeObject["Total"].toDouble();
-//                   tradeItem->setText(3, QSTRING_DOUBLE(total));
-//               }
-//               if (tradeObject.contains("TimeStamp")) {
-//                   QString timeStampStr = tradeObject["TimeStamp"].toString();
-//                   tradeItem->setText(4, timeStampStr);
-//               }
-//               if (tradeObject.contains("Id")) {
-//                   double id = tradeObject["Id"].toDouble();
-//                   tradeItem->setText(5, QSTRING_DOUBLE(id));
-//               }
-
-//               ui->tradesTableBittrex->addTopLevelItem(tradeItem);
-//               i++;
-//           }
-//           this->updatePricesPlot(count, prices, ui->pricesBittrexPlot);
-//       }
-
-//    } else {
-//        qWarning() << "Parsing Bittrex summary failed with error: " << jsonParseError.errorString();
-//    }
-//}
-
-void PoolBrowser::parseMintPalSummary(QNetworkReply *replay)
-{
-    QString data = replay->readAll();
-
-    qDebug() << "MintPalSummary response:" << data;
-
-    QJsonParseError jsonParseError;
-    QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8(), &jsonParseError);
-
-    if (jsonResponse.isObject()) {
-
-        QJsonObject mainObject = jsonResponse.object();
-
-        if (!mainObject.contains("data")) {
-            return;
-        }
-
-        QJsonObject dataObject = mainObject["data"].toObject();
-
-        // Updating last labels
-        if (dataObject.contains("last_price")) {
-
-            // BTC
-            QString lastPriceStr = dataObject["last_price"].toString();
-            qDebug() << "Last Price is " << dataObject["last_price"].toString();
-            double lastPriceDouble = lastPriceStr.toDouble();
-            this->setColoredTextBasedOnValues(lastPriceStr + " BTC", ui->lastBTCMintPalLabel,
-                                              lastMintPal, lastPriceDouble);
-            // USD
-            double lastPriceUSD = lastPriceDouble * bitcoinToUSD;
-            QString lastPriceUSDStr = QSTRING_DOUBLE(lastPriceUSD);
-            double prevPriceUSD = lastMintPal * bitcoinToUSD;
-            this->setColoredTextBasedOnValues(lastPriceUSDStr + " $", ui->lastUSDMintPalLabel,
-                                              prevPriceUSD, lastPriceUSD);
-
-            lastMintPal = lastPriceDouble;
-
-            // Saving variables needed to calculate form CAIx to BC and USD
-            bitcoing = lastPriceStr;
-            dollarg = lastPriceUSDStr;
-            lastuG = lastPriceUSD;
-        }
-
-        // Updating ask labels
-        if (dataObject.contains("top_ask")) {
-            // BTC
-            QString askStr = dataObject["top_ask"].toString();
-            double askDouble = askStr.toDouble();
-            this->setColoredTextBasedOnValues(askStr + " BTC", ui->askBTCMintPalLabel,
-                                              askMintPal, askDouble);
-            // USD
-            double askUSD = askDouble * bitcoinToUSD;
-            double prevAskUSD = askMintPal * bitcoinToUSD;
-            this->setColoredTextBasedOnValues(QSTRING_DOUBLE(askUSD) + " $", ui->askUSDMintPalLabel,
-                                              prevAskUSD, askUSD);
-
-            askMintPal = askDouble;
-        }
-
-        // Updating bid labels
-        if (dataObject.contains("top_bid")) {
-            // BTC
-            QString bidStr = dataObject["top_bid"].toString();
-            double bidDouble = bidStr.toDouble();
-            this->setColoredTextBasedOnValues(bidStr + " BTC", ui->bidBTCMintPalLabel,
-                                              bidMintPal, bidDouble);
-            // USD
-            double bidUSD = bidDouble * bitcoinToUSD;
-            double prevBidUSD = bidMintPal * bitcoinToUSD;
-            this->setColoredTextBasedOnValues(QSTRING_DOUBLE(bidUSD) + " $", ui->bidUSDMintPalLabel,
-                                              prevBidUSD, bidUSD);
-
-            bidMintPal = bidDouble;
-        }
-
-        // Updating volume labels
-        if (dataObject.contains("24hvol")) {
-            // BTC
-            QString volumeStr = dataObject["24hvol"].toString();
-            double volumeDouble = volumeStr.toDouble();
-            this->setColoredTextBasedOnValues(volumeStr, ui->volumesBTCMintPalLabel,
-                                              volumeMintPal, volumeDouble);
-
-            // USD
-            double volumeUSD = volumeDouble * bitcoinToUSD;
-            double prevVolumeUSD = volumeMintPal * bitcoinToUSD;
-            this->setColoredTextBasedOnValues(QSTRING_DOUBLE(volumeUSD) + " $", ui->volumeUSDMintPalLabel,
-                                              prevVolumeUSD, volumeUSD);
-
-            volumeMintPal = volumeDouble;
-        }
-
-        // Updating high label
-        if (dataObject.contains("24hhigh")) {
-            QString highStr = dataObject["24hhigh"].toString();
-            double highDouble = highStr.toDouble();
-            this->setColoredTextBasedOnValues(highStr, ui->highMintPalLabel,
-                                              highMintPal, highDouble);
-            highMintPal = highDouble;
-        }
-
-        // Updating low label
-        if (dataObject.contains("24hlow")) {
-            QString lowStr = dataObject["24hlow"].toString();
-            double lowDouble = lowStr.toDouble();
-            this->setColoredTextBasedOnValues(lowStr, ui->lowMintPalLabel,
-                                              lowMintPal, lowDouble);
-            lowMintPal = lowDouble;
-        }
-
-        if (dataObject.contains("change")) {
-            QString change = dataObject["change"].toString();
-            double changeDouble = change.toDouble();
-            this->setColoredTextBasedOnValues(change + "%", ui->yestMintpal,
-                                              changeMintPal, changeDouble);
-            changeMintPal = changeDouble;
-        }
     } else {
-        qWarning() << "Parsing MintPal summary failed with error: " << jsonParseError.errorString();
+        qWarning() << "Parsing Bittrex summary failed with error: " << jsonParseError.errorString();
     }
 }
 
-void PoolBrowser::parseMintPalOrders(QNetworkReply *replay)
+void PoolBrowser::parseBittrexOrders(QNetworkReply *replay)
 {
     QString data = replay->readAll();
-    qDebug() << "MintPalOrders response" + data;
+
+    qDebug() << "BittrexSummary response:" << data;
 
     QJsonParseError jsonParseError;
     QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8(), &jsonParseError);
-
     if (jsonResponse.isObject()) {
 
-        QJsonObject mainObject = jsonResponse.object();
-        if (!mainObject.contains("data")) {
-            return;
-        }
+       QJsonObject mainObject = jsonResponse.object();
+       if (!mainObject.contains("success")
+               && !mainObject["success"].toBool()) {
+           return;
+       }
 
-        QJsonArray dataArray = mainObject["data"].toArray();
+       if (mainObject.contains("result")) {
+           QJsonObject resultObject = mainObject["result"].toObject();
 
-        ui->buyTableMintPal->clear();
-        ui->sellTableMintPal->clear();
+           QVector<double> volumeSell(50), satoshiSell(50);
+           QVector<double> volumeBuy(50), satoshiBuy(50);
 
-        QVector<double> volumeSell(50), satoshiSell(50);
-        QVector<double> volumeBuy(50), satoshiBuy(50);
+           if (resultObject.contains("buy")) {
 
-        foreach (const QJsonValue &value, dataArray) {
+               ui->buyQuantityTable->clear();
 
-            QJsonObject obj = value.toObject();
-            if (obj.contains("type") && obj.contains("orders"))
-            {
-                QString typeString = obj["type"].toString();
-                QJsonArray orders = obj["orders"].toArray();
+               QJsonArray buyArray = resultObject["buy"].toArray();
 
-                QTreeWidget *table = NULL;
-                QVector<double> *volumeVector = NULL, *satoshiVector = NULL;
-                if (typeString == "buy") {
-                    table = ui->buyTableMintPal;
-                    volumeVector = &volumeBuy;
-                    satoshiVector = &satoshiBuy;
-                }
-                else if (typeString == "sell") {
-                    table = ui->sellTableMintPal;
-                    volumeVector = &volumeSell;
-                    satoshiVector = &satoshiSell;
-                }
-                else {
-                    continue;
-                }
-
-                int i = 0;
-                double cumulation = 0.0;
-                foreach (const QJsonValue &orderValue, orders) {
-
-                    QJsonObject order = orderValue.toObject();
+               int i = 0;
+               double cumulation = 0.0;
+               foreach (const QJsonValue &order, buyArray) {
+                    QJsonObject orderObject = order.toObject();
                     QTreeWidgetItem *orderItem = new QTreeWidgetItem();
 
-                    if (order.contains("price")) {
-                        QString priceStr = order["price"].toString();
-                        orderItem->setText(0, priceStr);
+                    if (orderObject.contains("Rate")) {
+                        double rate = orderObject["Rate"].toDouble();
+                        orderItem->setText(0, QSTRING_DOUBLE(rate));
 
-                        double satoshi = priceStr.toDouble() * 100000000;
+                        double satoshi = rate * 100000000;
 
-                        (*satoshiVector)[i] = satoshi;
-                        (*volumeVector)[i] = cumulation;
+                        satoshiBuy[i] = satoshi;
+                        volumeBuy[i] = cumulation;
                     }
-                    if (order.contains("amount")) {
-                        QString amountString = order["amount"].toString();
-                        orderItem->setText(1, amountString);
+                    if (orderObject.contains("Quantity")) {
+                        double quantity = orderObject["Quantity"].toDouble();
+                        orderItem->setText(1, QSTRING_DOUBLE(quantity));
 
-                        cumulation += amountString.toDouble();
+                        cumulation += quantity;
                     }
-                    if (order.contains("total")) {
-                        orderItem->setText(2, order["total"].toString());
-                    }
-                    table->addTopLevelItem(orderItem);
-                    i++;
+
+                    ui->buyQuantityTable->addTopLevelItem(orderItem);
                 }
-            }
-        }
+           }
 
-       this->updateVolumeSatoshiPlot(satoshiSell, satoshiBuy, volumeSell, volumeBuy, ui->orderMintPalPlot);
+           if (resultObject.contains("sell")) {
+
+               ui->sellQuantityTable->clear();
+               ui->sellQuantityTable->sortByColumn(0, Qt::AscendingOrder);
+
+               QJsonArray sellArray = resultObject["sell"].toArray();
+
+               int i = 0;
+               double cumulation = 0.0;
+               foreach (const QJsonValue &order, sellArray) {
+                    QJsonObject orderObject = order.toObject();
+                    QTreeWidgetItem *orderItem = new QTreeWidgetItem();
+
+                    if (orderObject.contains("Rate")) {
+                        double rate = orderObject["Rate"].toDouble();
+                        orderItem->setText(0, QSTRING_DOUBLE(rate));
+
+                        double satoshi = rate * 100000000;
+
+                        satoshiSell[i] = satoshi;
+                        volumeSell[i] = cumulation;
+                    }
+                    if (orderObject.contains("Quantity")) {
+                        double quantity = orderObject["Quantity"].toDouble();
+                        orderItem->setText(1, QSTRING_DOUBLE(quantity));
+
+                        cumulation += quantity;
+                    }
+                    ui->sellQuantityTable->addTopLevelItem(orderItem);
+                }
+           }
+
+           this->updateVolumeSatoshiPlot(satoshiSell, satoshiBuy, volumeSell, volumeBuy, ui->volumeSatoshiPlotBittrex);
+       }
 
     } else {
-        qWarning() << "Parsing MintPal orders failed with error: " << jsonParseError.errorString();
+        qWarning() << "Parsing Bittrex summary failed with error: " << jsonParseError.errorString();
     }
 }
 
-void PoolBrowser::parseMintPalHistory(QNetworkReply *replay)
+void PoolBrowser::parseBittrexHistory(QNetworkReply *replay)
 {
     QString data = replay->readAll();
-    qDebug() << "MintPal history response: " + data;
+
+    qDebug() << "BittrexSummary response:" << data;
 
     QJsonParseError jsonParseError;
     QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8(), &jsonParseError);
-
     if (jsonResponse.isObject()) {
 
-        ui->tradesMintPalTable->clear();
+       QJsonObject mainObject = jsonResponse.object();
+       if (!mainObject.contains("success")
+               && !mainObject["success"].toBool()) {
+           return;
+       }
 
-        QJsonObject mainObject = jsonResponse.object();
-        if (!mainObject.contains("data")) {
-            return;
-        }
+       if (mainObject.contains("result")) {
+           QJsonArray resultArray = mainObject["result"].toArray();
 
-        ui->tradesMintPalTable->sortByColumn(5, Qt::DescendingOrder);
+           ui->tradesTableBittrex->clear();
+           ui->tradesTableBittrex->setColumnWidth(0,  60);
+           ui->tradesTableBittrex->setColumnWidth(1,  100);
+           ui->tradesTableBittrex->setColumnWidth(2,  100);
+           ui->tradesTableBittrex->setColumnWidth(3,  100);
+           ui->tradesTableBittrex->setColumnWidth(4,  180);
+           ui->tradesTableBittrex->setColumnWidth(5,  100);
+           ui->tradesTableBittrex->sortByColumn(4);
 
-        QVector<double> count(100), prices(100);
+           QVector<double> count(50), prices(50);
 
-        QJsonArray dataArray = mainObject["data"].toArray();
+           int i = 0;
+           foreach (const QJsonValue &tradeValue, resultArray) {
 
-        int i = 0;
+               QJsonObject tradeObject = tradeValue.toObject();
+               QTreeWidgetItem *tradeItem = new QTreeWidgetItem();
 
-        foreach (const QJsonValue &value, dataArray) {
+               if (tradeObject.contains("OrderType")) {
+                   QString typeStr = tradeObject["OrderType"].toString();
+                   tradeItem->setText(0, typeStr);
+               }
+               if (tradeObject.contains("Quantity")) {
+                   double quantity = tradeObject["Quantity"].toDouble();
+                   tradeItem->setText(1, QSTRING_DOUBLE(quantity));
+               }
+               if (tradeObject.contains("Price")) {
+                   double rate = tradeObject["Price"].toDouble();
+                   tradeItem->setText(2, QSTRING_DOUBLE(rate));
 
-            QJsonObject tradeObject = value.toObject();
+                   count[i]  = resultArray.count() - i;
+                   prices[i] = rate * 100000000;
+               }
+               if (tradeObject.contains("Total")) {
+                   double total = tradeObject["Total"].toDouble();
+                   tradeItem->setText(3, QSTRING_DOUBLE(total));
+               }
+               if (tradeObject.contains("TimeStamp")) {
+                   QString timeStampStr = tradeObject["TimeStamp"].toString();
+                   tradeItem->setText(4, timeStampStr);
+               }
+               if (tradeObject.contains("Id")) {
+                   double id = tradeObject["Id"].toDouble();
+                   tradeItem->setText(5, QSTRING_DOUBLE(id));
+               }
 
-            QTreeWidgetItem *tradeItem = new QTreeWidgetItem();
-
-            if (tradeObject.contains("type")) {
-                tradeItem->setText(0, tradeObject["type"].toString());
-            }
-            if (tradeObject.contains("price")) {
-
-                QString priceString = tradeObject["price"].toString();
-                tradeItem->setText(1, priceString);
-
-                count[i]  = dataArray.count() - i;
-                prices[i] = priceString.toDouble() * 100000000;
-            }
-            if (tradeObject.contains("amount")) {
-                tradeItem->setText(2, tradeObject["amount"].toString());
-            }
-            if (tradeObject.contains("total")) {
-                tradeItem->setText(3, tradeObject["total"].toString());
-            }
-            if (tradeObject.contains("time")) {
-                double tradeTimeStamp = tradeObject["time"].toString().toDouble();
-
-                QDateTime timestamp;
-                timestamp.setTime_t(tradeTimeStamp);
-
-                tradeItem->setText(4, timestamp.toString(Qt::SystemLocaleShortDate));
-            }
-
-            ui->tradesMintPalTable->addTopLevelItem(tradeItem);
-            i++;
-        }
-        this->updateMintPalPricesPlot(count, prices);
+               ui->tradesTableBittrex->addTopLevelItem(tradeItem);
+               i++;
+           }
+           this->updatePricesPlot(count, prices, ui->pricesBittrexPlot);
+       }
 
     } else {
-        qWarning() << "Parsing MintPal history failed with error: " << jsonParseError.errorString();
+        qWarning() << "Parsing Bittrex summary failed with error: " << jsonParseError.errorString();
     }
 }
+
+//void PoolBrowser::parseMintPalSummary(QNetworkReply *replay)
+//{
+//    QString data = replay->readAll();
+
+//    qDebug() << "MintPalSummary response:" << data;
+
+//    QJsonParseError jsonParseError;
+//    QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8(), &jsonParseError);
+
+//    if (jsonResponse.isObject()) {
+
+//        QJsonObject mainObject = jsonResponse.object();
+
+//        if (!mainObject.contains("data")) {
+//            return;
+//        }
+
+//        QJsonObject dataObject = mainObject["data"].toObject();
+
+//        // Updating last labels
+//        if (dataObject.contains("last_price")) {
+
+//            // BTC
+//            QString lastPriceStr = dataObject["last_price"].toString();
+//            qDebug() << "Last Price is " << dataObject["last_price"].toString();
+//            double lastPriceDouble = lastPriceStr.toDouble();
+//            this->setColoredTextBasedOnValues(lastPriceStr + " BTC", ui->lastBTCMintPalLabel,
+//                                              lastMintPal, lastPriceDouble);
+//            // USD
+//            double lastPriceUSD = lastPriceDouble * bitcoinToUSD;
+//            QString lastPriceUSDStr = QSTRING_DOUBLE(lastPriceUSD);
+//            double prevPriceUSD = lastMintPal * bitcoinToUSD;
+//            this->setColoredTextBasedOnValues(lastPriceUSDStr + " $", ui->lastUSDMintPalLabel,
+//                                              prevPriceUSD, lastPriceUSD);
+
+//            lastMintPal = lastPriceDouble;
+
+//            // Saving variables needed to calculate form CAIx to BC and USD
+//            bitcoing = lastPriceStr;
+//            dollarg = lastPriceUSDStr;
+//            lastuG = lastPriceUSD;
+//        }
+
+//        // Updating ask labels
+//        if (dataObject.contains("top_ask")) {
+//            // BTC
+//            QString askStr = dataObject["top_ask"].toString();
+//            double askDouble = askStr.toDouble();
+//            this->setColoredTextBasedOnValues(askStr + " BTC", ui->askBTCMintPalLabel,
+//                                              askMintPal, askDouble);
+//            // USD
+//            double askUSD = askDouble * bitcoinToUSD;
+//            double prevAskUSD = askMintPal * bitcoinToUSD;
+//            this->setColoredTextBasedOnValues(QSTRING_DOUBLE(askUSD) + " $", ui->askUSDMintPalLabel,
+//                                              prevAskUSD, askUSD);
+
+//            askMintPal = askDouble;
+//        }
+
+//        // Updating bid labels
+//        if (dataObject.contains("top_bid")) {
+//            // BTC
+//            QString bidStr = dataObject["top_bid"].toString();
+//            double bidDouble = bidStr.toDouble();
+//            this->setColoredTextBasedOnValues(bidStr + " BTC", ui->bidBTCMintPalLabel,
+//                                              bidMintPal, bidDouble);
+//            // USD
+//            double bidUSD = bidDouble * bitcoinToUSD;
+//            double prevBidUSD = bidMintPal * bitcoinToUSD;
+//            this->setColoredTextBasedOnValues(QSTRING_DOUBLE(bidUSD) + " $", ui->bidUSDMintPalLabel,
+//                                              prevBidUSD, bidUSD);
+
+//            bidMintPal = bidDouble;
+//        }
+
+//        // Updating volume labels
+//        if (dataObject.contains("24hvol")) {
+//            // BTC
+//            QString volumeStr = dataObject["24hvol"].toString();
+//            double volumeDouble = volumeStr.toDouble();
+//            this->setColoredTextBasedOnValues(volumeStr, ui->volumesBTCMintPalLabel,
+//                                              volumeMintPal, volumeDouble);
+
+//            // USD
+//            double volumeUSD = volumeDouble * bitcoinToUSD;
+//            double prevVolumeUSD = volumeMintPal * bitcoinToUSD;
+//            this->setColoredTextBasedOnValues(QSTRING_DOUBLE(volumeUSD) + " $", ui->volumeUSDMintPalLabel,
+//                                              prevVolumeUSD, volumeUSD);
+
+//            volumeMintPal = volumeDouble;
+//        }
+
+//        // Updating high label
+//        if (dataObject.contains("24hhigh")) {
+//            QString highStr = dataObject["24hhigh"].toString();
+//            double highDouble = highStr.toDouble();
+//            this->setColoredTextBasedOnValues(highStr, ui->highMintPalLabel,
+//                                              highMintPal, highDouble);
+//            highMintPal = highDouble;
+//        }
+
+//        // Updating low label
+//        if (dataObject.contains("24hlow")) {
+//            QString lowStr = dataObject["24hlow"].toString();
+//            double lowDouble = lowStr.toDouble();
+//            this->setColoredTextBasedOnValues(lowStr, ui->lowMintPalLabel,
+//                                              lowMintPal, lowDouble);
+//            lowMintPal = lowDouble;
+//        }
+
+//        if (dataObject.contains("change")) {
+//            QString change = dataObject["change"].toString();
+//            double changeDouble = change.toDouble();
+//            this->setColoredTextBasedOnValues(change + "%", ui->yestMintpal,
+//                                              changeMintPal, changeDouble);
+//            changeMintPal = changeDouble;
+//        }
+//    } else {
+//        qWarning() << "Parsing MintPal summary failed with error: " << jsonParseError.errorString();
+//    }
+//}
+
+//void PoolBrowser::parseMintPalOrders(QNetworkReply *replay)
+//{
+//    QString data = replay->readAll();
+//    qDebug() << "MintPalOrders response" + data;
+
+//    QJsonParseError jsonParseError;
+//    QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8(), &jsonParseError);
+
+//    if (jsonResponse.isObject()) {
+
+//        QJsonObject mainObject = jsonResponse.object();
+//        if (!mainObject.contains("data")) {
+//            return;
+//        }
+
+//        QJsonArray dataArray = mainObject["data"].toArray();
+
+//        ui->buyTableMintPal->clear();
+//        ui->sellTableMintPal->clear();
+
+//        QVector<double> volumeSell(50), satoshiSell(50);
+//        QVector<double> volumeBuy(50), satoshiBuy(50);
+
+//        foreach (const QJsonValue &value, dataArray) {
+
+//            QJsonObject obj = value.toObject();
+//            if (obj.contains("type") && obj.contains("orders"))
+//            {
+//                QString typeString = obj["type"].toString();
+//                QJsonArray orders = obj["orders"].toArray();
+
+//                QTreeWidget *table = NULL;
+//                QVector<double> *volumeVector = NULL, *satoshiVector = NULL;
+//                if (typeString == "buy") {
+//                    table = ui->buyTableMintPal;
+//                    volumeVector = &volumeBuy;
+//                    satoshiVector = &satoshiBuy;
+//                }
+//                else if (typeString == "sell") {
+//                    table = ui->sellTableMintPal;
+//                    volumeVector = &volumeSell;
+//                    satoshiVector = &satoshiSell;
+//                }
+//                else {
+//                    continue;
+//                }
+
+//                int i = 0;
+//                double cumulation = 0.0;
+//                foreach (const QJsonValue &orderValue, orders) {
+
+//                    QJsonObject order = orderValue.toObject();
+//                    QTreeWidgetItem *orderItem = new QTreeWidgetItem();
+
+//                    if (order.contains("price")) {
+//                        QString priceStr = order["price"].toString();
+//                        orderItem->setText(0, priceStr);
+
+//                        double satoshi = priceStr.toDouble() * 100000000;
+
+//                        (*satoshiVector)[i] = satoshi;
+//                        (*volumeVector)[i] = cumulation;
+//                    }
+//                    if (order.contains("amount")) {
+//                        QString amountString = order["amount"].toString();
+//                        orderItem->setText(1, amountString);
+
+//                        cumulation += amountString.toDouble();
+//                    }
+//                    if (order.contains("total")) {
+//                        orderItem->setText(2, order["total"].toString());
+//                    }
+//                    table->addTopLevelItem(orderItem);
+//                    i++;
+//                }
+//            }
+//        }
+
+//       this->updateVolumeSatoshiPlot(satoshiSell, satoshiBuy, volumeSell, volumeBuy, ui->orderMintPalPlot);
+
+//    } else {
+//        qWarning() << "Parsing MintPal orders failed with error: " << jsonParseError.errorString();
+//    }
+//}
+
+//void PoolBrowser::parseMintPalHistory(QNetworkReply *replay)
+//{
+//    QString data = replay->readAll();
+//    qDebug() << "MintPal history response: " + data;
+
+//    QJsonParseError jsonParseError;
+//    QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8(), &jsonParseError);
+
+//    if (jsonResponse.isObject()) {
+
+//        ui->tradesMintPalTable->clear();
+
+//        QJsonObject mainObject = jsonResponse.object();
+//        if (!mainObject.contains("data")) {
+//            return;
+//        }
+
+//        ui->tradesMintPalTable->sortByColumn(5, Qt::DescendingOrder);
+
+//        QVector<double> count(100), prices(100);
+
+//        QJsonArray dataArray = mainObject["data"].toArray();
+
+//        int i = 0;
+
+//        foreach (const QJsonValue &value, dataArray) {
+
+//            QJsonObject tradeObject = value.toObject();
+
+//            QTreeWidgetItem *tradeItem = new QTreeWidgetItem();
+
+//            if (tradeObject.contains("type")) {
+//                tradeItem->setText(0, tradeObject["type"].toString());
+//            }
+//            if (tradeObject.contains("price")) {
+
+//                QString priceString = tradeObject["price"].toString();
+//                tradeItem->setText(1, priceString);
+
+//                count[i]  = dataArray.count() - i;
+//                prices[i] = priceString.toDouble() * 100000000;
+//            }
+//            if (tradeObject.contains("amount")) {
+//                tradeItem->setText(2, tradeObject["amount"].toString());
+//            }
+//            if (tradeObject.contains("total")) {
+//                tradeItem->setText(3, tradeObject["total"].toString());
+//            }
+//            if (tradeObject.contains("time")) {
+//                double tradeTimeStamp = tradeObject["time"].toString().toDouble();
+
+//                QDateTime timestamp;
+//                timestamp.setTime_t(tradeTimeStamp);
+
+//                tradeItem->setText(4, timestamp.toString(Qt::SystemLocaleShortDate));
+//            }
+
+//            ui->tradesMintPalTable->addTopLevelItem(tradeItem);
+//            i++;
+//        }
+//        this->updateMintPalPricesPlot(count, prices);
+
+//    } else {
+//        qWarning() << "Parsing MintPal history failed with error: " << jsonParseError.errorString();
+//    }
+//}
 
 void PoolBrowser::parseCryptsySummary(QNetworkReply *replay)
 {
@@ -785,6 +784,13 @@ void PoolBrowser::parseCryptsySummary(QNetworkReply *replay)
 
     if (jsonResponse.isObject()) {
         ui->tradesCryptsyTable->clear();
+        ui->tradesCryptsyTable->setColumnWidth(0,  60);
+        ui->tradesCryptsyTable->setColumnWidth(1,  100);
+        ui->tradesCryptsyTable->setColumnWidth(2,  100);
+        ui->tradesCryptsyTable->setColumnWidth(3,  100);
+        ui->tradesCryptsyTable->setColumnWidth(4,  180);
+        ui->tradesCryptsyTable->setColumnWidth(5,  100);
+        ui->tradesCryptsyTable->sortByColumn(4);
 
         QJsonObject mainObject = jsonResponse.object();
 
@@ -799,14 +805,13 @@ void PoolBrowser::parseCryptsySummary(QNetworkReply *replay)
                     // Updating summary labels
                     this->refreshStringVarAsBTCUsingField(caixObject, "lasttradeprice",
                                                     lastCryptsy, ui->lastBTCCryptsyLabel);
+
+
                     lastCryptsy = this->refreshStringVarAsUSDUsingField(caixObject, "lasttradeprice",
                                                                   lastCryptsy, ui->lastUSDCryptsyLabel);
 
-                    this->refreshStringVarUsingField(caixObject, "volume",
+                    volumeCryptsy = this->refreshStringVarUsingField(caixObject, "volume",
                                                volumeCryptsy, ui->volumesBTCCryptsyLabel);
-
-//                    volumeCryptsy = this->refreshStringVarAsUSDUsingField(caixObject, "volume",
-//                                                                    volumeCryptsy, ui->volumeUSDCryptsyLabel);
 
                     double high = -999999999;
                     double low  =  999999999;
@@ -1012,15 +1017,15 @@ void PoolBrowser::parseCryptsyOrders(QNetworkReply *replay)
     }
 }
 
-//void PoolBrowser::openBittrexPage()
-//{
-//    this->openUrl(kBittrexPage);
-//}
-
-void PoolBrowser::openMintPalPage()
+void PoolBrowser::openBittrexPage()
 {
-    this->openUrl(kMintPalPage);
+    this->openUrl(kBittrexPage);
 }
+
+//void PoolBrowser::openMintPalPage()
+//{
+//    this->openUrl(kMintPalPage);
+//}
 
 void PoolBrowser::openCryptsyPage()
 {
@@ -1034,8 +1039,8 @@ void PoolBrowser::openUrl(const QString &url)
 
 void PoolBrowser::downloadAllMarketsData()
 {
-    //this->downloadBittrexMarketData();
-    this->downloadMintPalMarketData();
+    this->downloadBittrexMarketData();
+    //this->downloadMintPalMarketData();
     this->downloadCryptsyMarketData();
 }
 
@@ -1162,10 +1167,10 @@ double PoolBrowser::refreshDoubleVarAsUSDUsingField(const QJsonObject &jsonObjec
     }
 }
 
-void PoolBrowser::updateMintPalPricesPlot(const QVector<double> &count, const QVector<double> &prices)
-{
-    this->updatePricesPlot(count, prices, ui->priceMintPalPlot);
-}
+//void PoolBrowser::updateMintPalPricesPlot(const QVector<double> &count, const QVector<double> &prices)
+//{
+//    this->updatePricesPlot(count, prices, ui->priceMintPalPlot);
+//}
 
 void PoolBrowser::updateCrypstyPricesPlot(const QVector<double> &count, const QVector<double> &prices)
 {
