@@ -16,13 +16,13 @@ USE_IPV6=-
 USE_UPNP=-
 USE_QRCODE=1
 
-win32:BOOST_LIB_SUFFIX=-mgw49-mt-s-1_55
-win32:BOOST_INCLUDE_PATH=C:/deps/boost_1_55_0
-win32:BOOST_LIB_PATH=C:/deps/boost_1_55_0/stage/lib
+win32:BOOST_LIB_SUFFIX=-mgw49-mt-s-1_57
+win32:BOOST_INCLUDE_PATH=C:/deps/boost_1_57_0
+win32:BOOST_LIB_PATH=C:/deps/boost_1_57_0/stage/lib
 win32:BDB_INCLUDE_PATH=C:/deps/db-4.8.30.NC/build_unix
 win32:BDB_LIB_PATH=C:/deps/db-4.8.30.NC/build_unix
-win32:OPENSSL_INCLUDE_PATH=C:/deps/openssl-1.0.1i/include
-win32:OPENSSL_LIB_PATH=C:/deps/openssl-1.0.1i/
+win32:OPENSSL_INCLUDE_PATH=C:/deps/openssl-1.0.1j/include
+win32:OPENSSL_LIB_PATH=C:/deps/openssl-1.0.1j/
 win32:MINIUPNPC_INCLUDE_PATH=C:/deps/
 win32:MINIUPNPC_LIB_PATH=C:/deps/miniupnpc
 win32:QRENCODE_INCLUDE_PATH=C:/deps/qrencode-3.4.4
@@ -417,7 +417,7 @@ OTHER_FILES += \
 # platform specific defaults, if not overridden on command line
 isEmpty(BOOST_LIB_SUFFIX) {
     macx:BOOST_LIB_SUFFIX = -mt
-    win32:BOOST_LIB_SUFFIX = -mgw49-mt-s-1_55
+    win32:BOOST_LIB_SUFFIX = -mgw49-mt-s-1_57
 }
 
 isEmpty(BOOST_THREAD_LIB_SUFFIX) {
