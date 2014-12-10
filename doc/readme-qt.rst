@@ -48,7 +48,7 @@ Windows
 
 Windows build instructions:
 
-- Download and build all required dependencies. There's an easy to follow tutorial on `bitcointalk.org`_. We used openSSL v1.0.1i, Berkeley DB 4.8, Boost v1.55, miniupnc 1.9, protobuf 2.5.0, libpng 1.6.12 and qrencode-3.4.4 with a Qt 5.3.1 environment.
+- Download and build all required dependencies. There's an easy to follow tutorial on `bitcointalk.org`_. We used openSSL v1.0.1j, Berkeley DB 4.8, Boost v1.57, miniupnc 1.9, protobuf 2.6.1, libpng 1.6.15 and qrencode-3.4.4 with a Qt 5.3.2 environment.
 
 - If you're using newer versions of dependencies, you'll have to adjust the LIB and INCLUDE paths of those dependencies in the caix-qt.pro file
 
