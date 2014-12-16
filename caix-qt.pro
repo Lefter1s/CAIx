@@ -28,14 +28,12 @@ win32:MINIUPNPC_LIB_PATH=C:/deps/miniupnpc
 win32:QRENCODE_INCLUDE_PATH=C:/deps/qrencode-3.4.4
 win32:QRENCODE_LIB_PATH=C:/deps/qrencode-3.4.4/.libs
 
-macx:BOOST_INCLUDE_PATH=/usr/local/Cellar/boost/1.56.0/include
-macx:BOOST_LIB_PATH=/usr/local/Cellar/boost/1.56.0/lib
-macx:BDB_INCLUDE_PATH=/opt/local/include/db48
-macx:BDB_LIB_PATH=/opt/local/lib/db48
-macx:OPENSSL_INCLUDE_PATH=/usr/local/Cellar/openssl/1.0.1j_1/include
-macx:OPENSSL_LIB_PATH=/usr/local/Cellar/openssl/1.0.1j_1/lib
-macx:MINIUPNPC_INCLUDE_PATH=/usr/local/Cellar/miniupnpc/1.9.20141027/include
-macx:MINIUPNPC_LIB_PATH=/usr/local/Cellar/miniupnpc/1.9.20141027/lib
+macx:BOOST_INCLUDE_PATH=/opt/local/include/boost
+macx:BOOST_LIB_PATH=/opt/local/lib
+macx:OPENSSL_INCLUDE_PATH=/opt/local/include/openssl
+macx:OPENSSL_LIB_PATH=/opt/local/lib
+macx:MINIUPNPC_INCLUDE_PATH=/opt/local/include/miniupnpc
+macx:MINIUPNPC_LIB_PATH=/opt/local/lib
 macx:QRENCODE_INCLUDE_PATH=/opt/local/include
 macx:QRENCODE_LIB_PATH=/opt/local/lib
 
@@ -46,7 +44,7 @@ UI_DIR = build
 # use: qmake "RELEASE=1"
 contains(RELEASE, 1) {
     # Mac: compile for maximum compatibility (10.7, 64-bit)
-    macx:QMAKE_CXXFLAGS += -mmacosx-version-min=10.7 -arch x86_64 -isysroot /Developer/SDKs/MacOSX10..sdk
+    macx:QMAKE_CXXFLAGS += -mmacosx-version-min=10.7 -arch x86_64 -isysroot /Developer/SDKs/MacOSX10.7.sdk
 
     !windows:!macx {
         # Linux: static link and extra security (see: https://wiki.debian.org/Hardening)
