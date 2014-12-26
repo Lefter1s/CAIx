@@ -9,7 +9,7 @@ You can find build instructions for Windows, OS X and Unix in the documents buil
 Build configuration options
 ============================
 
-UPNnP port forwarding
+UPNP port forwarding
 ---------------------
 
 To use UPnP for port forwarding behind a NAT router (recommended, as more connections overall allow for a faster and more stable caix experience), pass the following argument to qmake:
