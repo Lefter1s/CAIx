@@ -15,4 +15,16 @@ If you are having problems, please contact us on our [subreddit](http://www.redd
 - Confirmations: 10
 - Maturity: 500
 - Minimum Stake Age: 8 to 10 hours
-- Ports: RPC = 1510 and P2P = 1511
+
+#Additional information
+- Daemon name: CAIxd
+- Config file name (case sensitive!): CAIx.conf
+- RPC Port: 1510
+- P2P Port: 1511
+- Adresses start with X
+
+#Default directories
+- Windows OS previous to Vista: C:\Documents and Settings\YourUsername\Application Data\CAIx
+- Windows OS from Vista up untill Windows 8.1: C:\Users\YourUsername\AppData\Roaming\CAIx, you might have to enable the option "Show hidden folders"
+- Mac OS X: ~/Library/Application Support/CAIx
+- Unix: ~/.CAIx
