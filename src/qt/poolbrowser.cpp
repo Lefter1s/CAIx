@@ -90,15 +90,13 @@ PoolBrowser::PoolBrowser(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::PoolBrowser)
 {
+    this->getRequest(kCurrencyUSDUrl);
     ui->setupUi(this);
     setFixedSize(400, 420);
-    this->getRequest(kCurrencyUSDUrl);
 
     this->setupBittrexGraphs();
     //this->setupMintPalGraphs();
     this->setupCryptsyGraphs();
-
-    this->downloadAllMarketsData();
 
     QObject::connect(&m_nam, SIGNAL(finished(QNetworkReply*)), this, SLOT(parseNetworkResponse(QNetworkReply*)));
     connect(ui->egal, SIGNAL(pressed()), this, SLOT(egaldo()));
@@ -106,6 +104,8 @@ PoolBrowser::PoolBrowser(QWidget *parent) :
     this->setupBittrexTabSlots();
     //this->setupMintPalTabSlots();
     this->setupCryptsyTabSlots();
+
+    this->downloadAllMarketsData();
 }
 
 void PoolBrowser::setupBittrexGraphs()
@@ -1068,7 +1068,6 @@ void PoolBrowser::openUrl(const QString &url)
 
 void PoolBrowser::downloadAllMarketsData()
 {
-    this->getRequest(kCurrencyUSDUrl);
     this->downloadBittrexMarketData();
     //this->downloadMintPalMarketData();
     this->downloadCryptsyMarketData();
