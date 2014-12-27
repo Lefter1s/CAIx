@@ -90,7 +90,7 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     setWindowFlags(Qt::FramelessWindowHint);
     setWindowTitle(tr("CAIx") + " " + tr("Wallet"));
     setObjectName("CAIx-qt");
-    setStyleSheet("#CAIx-qt {background-color:#fbf9f6; font-family:'Open Sans';}");
+    setStyleSheet("#CAIx-qt {background-color:#fbf9f6; font-family:'Open Sans'; border-style: outset; border-color: #33363B; border-width: 1px;}");
 
 #ifndef Q_OS_MAC
     qApp->setWindowIcon(QIcon(":icons/bitcoin"));
@@ -135,6 +135,7 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
 
     //Define Central Widget
     centralWidget = new QStackedWidget(this);
+    centralWidget->setStyleSheet("margin-left:1px");
     centralWidget->addWidget(overviewPage);
     centralWidget->addWidget(statisticsPage);
     centralWidget->addWidget(chatWindow);
@@ -145,8 +146,8 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     centralWidget->addWidget(receiveCoinsPage);
     centralWidget->addWidget(sendCoinsPage);
     centralWidget->addWidget(settingsPage);
-    centralWidget->setMaximumWidth(1000);
-    centralWidget->setMaximumHeight(600);
+    centralWidget->setMaximumWidth(998);
+    centralWidget->setMaximumHeight(500);
     setCentralWidget(centralWidget);
 
     // Create status bar notification icons
@@ -485,7 +486,7 @@ void BitcoinGUI::createToolBars()
     statusBar->addWidget(labelConnectionsIcon);
     statusBar->addWidget(labelBlocksIcon);
     statusBar->addWidget(labelStakingIcon);
-    statusBar->setStyleSheet("QToolBar QToolButton {border:0px;} QToolBar{background-image: url(:/images/header-top); background-repeat:no-repeat; border:0px;}");
+    statusBar->setStyleSheet("QToolBar QToolButton {border:0px;} QToolBar{background-image: url(:/images/header-top); background-repeat:no-repeat; border-style: none outset none outset; border-width:1px; border-color:#33363B;}");
     //insertToolBarBreak(statusBar);
 
     //Create toolbar to convert, minimalise and quit
@@ -503,7 +504,7 @@ void BitcoinGUI::createToolBars()
     quitBar->addAction(actionConvertIcon);
     quitBar->addAction(toggleHideAction);
     quitBar->addAction(quitAction);
-    quitBar->setStyleSheet("QToolBar QToolButton {border:0px;} QToolBar { border:0px;}");
+    quitBar->setStyleSheet("QToolBar QToolButton {border:0px;} QToolBar { border-style: none outset none none; border-color: #33363B; border-width: 1px;}");
     QHBoxLayout *quitBarVbox = new QHBoxLayout();
     quitBarVbox->addWidget(quitBar);
     quitBarVbox->setContentsMargins(0,0,0,0);
@@ -531,7 +532,7 @@ void BitcoinGUI::createToolBars()
     navigationBar->addAction(chatAction);
     navigationBar->addAction(blockAction);
     navigationBar->addAction(settingsAction);
-    navigationBar->setStyleSheet("QToolBar {border: 0px; background-image: url(:/images/menu); background-repeat:no-repeat;} QToolBar QToolButton:hover{color: #F37255;} QToolBar QToolButton:checked {color: #F37255;} QToolBar QToolButton{font-weight:bold; margin-bottom:12px; padding-left:8px; font-size:10px; font-family:'Open Sans Extrabold'; color:#848890; text-align:left; background:transparent; text-transform:uppercase; height:100%;}");
+    navigationBar->setStyleSheet("QToolBar {border-style: none outset none outset; border-width:1px; border-color:#33363B; background-image: url(:/images/menu); background-repeat:no-repeat;} QToolBar QToolButton:hover{color: #F37255;} QToolBar QToolButton:checked {color: #F37255;} QToolBar QToolButton{font-weight:bold; margin-bottom:12px; padding-left:8px; font-size:10px; font-family:'Open Sans Extrabold'; color:#848890; text-align:left; background:transparent; text-transform:uppercase; height:100%;}");
     insertToolBarBreak(navigationBar);
 
     //Export and Settings bar

@@ -6,15 +6,9 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
-    <height>600</height>
+    <width>998</width>
+    <height>450</height>
    </rect>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>1000</width>
-    <height>600</height>
-   </size>
   </property>
   <property name="maximumSize">
    <size>
@@ -28,17 +22,11 @@
   <widget class="QWidget" name="widget_2" native="true">
    <property name="geometry">
     <rect>
-     <x>0</x>
+     <x>2</x>
      <y>0</y>
      <width>1000</width>
-     <height>600</height>
+     <height>449</height>
     </rect>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>1000</width>
-     <height>600</height>
-    </size>
    </property>
    <property name="maximumSize">
     <size>
@@ -89,7 +77,6 @@
       <attribute name="title">
        <string>Tab 1</string>
       </attribute>
-      <zorder>hide3</zorder>
      </widget>
      <widget class="QWidget" name="tab_5">
       <attribute name="title">
@@ -155,17 +142,11 @@
    <widget class="QWidget" name="hide3" native="true">
     <property name="geometry">
      <rect>
-      <x>0</x>
+      <x>2</x>
       <y>0</y>
-      <width>1000</width>
-      <height>600</height>
+      <width>998</width>
+      <height>560</height>
      </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>1000</width>
-      <height>600</height>
-     </size>
     </property>
     <property name="maximumSize">
      <size>

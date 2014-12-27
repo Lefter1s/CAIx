@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
+    <width>998</width>
     <height>600</height>
    </rect>
   </property>
@@ -15,12 +15,6 @@
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>1000</width>
-    <height>600</height>
-   </size>
   </property>
   <property name="maximumSize">
    <size>
@@ -443,9 +437,9 @@
   <widget class="QFrame" name="Transactionframe">
    <property name="geometry">
     <rect>
-     <x>375</x>
+     <x>374</x>
      <y>0</y>
-     <width>677</width>
+     <width>600</width>
      <height>490</height>
     </rect>
    </property>
@@ -457,7 +451,7 @@
    </property>
    <property name="minimumSize">
     <size>
-     <width>677</width>
+     <width>600</width>
      <height>490</height>
     </size>
    </property>

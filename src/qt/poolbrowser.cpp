@@ -20,10 +20,10 @@ const QString kMintPalPage = "https://www.mintpal.com/market/CAIx/BTC";
 const QString kCryptsyPage = "https://www.cryptsy.com/markets/view/221";
 
 // Bitcoin to USD
-const QString kCurrencyUSDUrl    = "http://blockchain.info/tobtc?currency=USD&value=1";
+const QString kCurrencyUSDUrl    = "https://www.bitstamp.net/api/ticker/";
 
 // Bittrex API urls
-const QString kBittrexSummaryUrl        = "http://bittrex.com/api/v1.1/public/getmarketsummaries";
+const QString kBittrexSummaryUrl        = "http://bittrex.com/api/v1.1/public/getmarketsummary?market=btc-caix";
 const QString kBittrexOrdersUrl         = "http://bittrex.com/api/v1.1/public/getorderbook?market=BTC-CAIX&type=both&depth=50";
 const QString kBittrexHistoryUrl        = "http://bittrex.com/api/v1.1/public/getmarkethistory?market=BTC-CAIX&count=100";
 
@@ -101,7 +101,7 @@ PoolBrowser::PoolBrowser(QWidget *parent) :
     this->downloadAllMarketsData();
 
     QObject::connect(&m_nam, SIGNAL(finished(QNetworkReply*)), this, SLOT(parseNetworkResponse(QNetworkReply*)));
-    connect(ui->egal, SIGNAL(pressed()), this, SLOT( egaldo()));
+    connect(ui->egal, SIGNAL(pressed()), this, SLOT(egaldo()));
 
     this->setupBittrexTabSlots();
     //this->setupMintPalTabSlots();
@@ -117,8 +117,8 @@ void PoolBrowser::setupBittrexGraphs()
 
 void PoolBrowser::setupBittrexTabSlots()
 {
-    connect(ui->refreshBittrexButton, SIGNAL(pressed()), this, SLOT( downloadBittrexMarketData()));
-    connect(ui->refreshBittrexButton, SIGNAL(pressed()), this, SLOT( updateBitcoinPrice()));
+    connect(ui->refreshBittrexButton, SIGNAL(pressed()), this, SLOT(updateBitcoinPrice()));
+    connect(ui->refreshBittrexButton, SIGNAL(pressed()), this, SLOT(downloadBittrexMarketData()));
     connect(ui->bittrexButton, SIGNAL(pressed()), this, SLOT( openBittrexPage()));
 }
 
@@ -150,8 +150,8 @@ void PoolBrowser::setupCryptsyGraphs()
 
 void PoolBrowser::setupCryptsyTabSlots()
 {
-    connect(ui->refreshCryptsyButton, SIGNAL(pressed()), this, SLOT(downloadCryptsyMarketData()));
     connect(ui->refreshCryptsyButton, SIGNAL(pressed()), this, SLOT(updateBitcoinPrice()));
+    connect(ui->refreshCryptsyButton, SIGNAL(pressed()), this, SLOT(downloadCryptsyMarketData()));
     connect(ui->cryptsyButton, SIGNAL(pressed()), this, SLOT(openCryptsyPage()));
 }
 
@@ -168,8 +168,7 @@ void PoolBrowser::getRequest( const QString &urlString )
     QUrl url ( urlString );
     QNetworkRequest req ( url );
     QSslConfiguration config = QSslConfiguration::defaultConfiguration();
-    //config.setProtocol(QSsl::SslV3);
-    config.setProtocol(QSsl::TlsV1_2);
+    config.setProtocol(QSsl::SslV3);
     req.setSslConfiguration(config);
     req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json; charset=utf-8");
     m_nam.get(req);
@@ -230,9 +229,23 @@ void PoolBrowser::parseNetworkResponse(QNetworkReply *finished )
 void PoolBrowser::parseCurrencyUSD(QNetworkReply *replay)
 {
     // QNetworkReply is a QIODevice. So we read from it just like it was a file
-    QString bitcoin = replay->readAll();
-    bitcoinToUSD = (1 / bitcoin.toDouble());
-    bitcoin = QSTRING_DOUBLE(bitcoinToUSD);
+    QString data = replay->readAll();
+    QString bitcoin;
+
+    QJsonParseError jsonParseError;
+    QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8(), &jsonParseError);
+    if (jsonResponse.isObject()) {
+
+       QJsonObject mainObject = jsonResponse.object();
+
+       if (mainObject.contains("last")) {
+            bitcoin = mainObject["last"].toString();
+            bitcoinToUSD = bitcoin.toDouble();
+
+            qDebug() << "Current bitcoin price in USD:" << bitcoin;
+       }
+    }
+
     if(bitcoin > bitcoinp) {
         ui->bitcoin->setText("<b><font color=\"green\">" + bitcoin + " $</font></b>");
     } else if (bitcoin < bitcoinp) {
@@ -267,6 +280,10 @@ void PoolBrowser::parseBittrexSummary(QNetworkReply *replay)
                if (marketObject.contains("MarketName")
                    && marketObject["MarketName"].toString() == "BTC-CAIX") {
 
+                   double dollargD = lastBittrex * bitcoinToUSD;
+                   dollarg = QSTRING_DOUBLE(dollargD);
+                   bitcoing = QSTRING_DOUBLE(lastBittrex);
+
                    // Updating summary labels
                    highBittrex = this->refreshDoubleVarUsingField(marketObject, "High",
                                                                   highBittrex, ui->highBittrex);
@@ -282,10 +299,6 @@ void PoolBrowser::parseBittrexSummary(QNetworkReply *replay)
                                                          lastBittrex, ui->lastBTCBittrex);
                    lastBittrex = this->refreshDoubleVarAsUSDUsingField(marketObject, "Last",
                                                                        lastBittrex, ui->lastUSDBittrex);
-
-                   double dollargD = lastBittrex * bitcoinToUSD;
-                   dollarg = QSTRING_DOUBLE(dollargD);
-                   bitcoing = QSTRING_DOUBLE(lastBittrex);
 
 //                   volumeSCBittrex = this->refreshDoubleVarUsingField(marketObject, "Volume",
 //                                                                      volumeSCBittrex, ui->volumeSCBittrex);
@@ -364,9 +377,11 @@ void PoolBrowser::parseBittrexOrders(QNetworkReply *replay)
                foreach (const QJsonValue &order, buyArray) {
                     QJsonObject orderObject = order.toObject();
                     QTreeWidgetItem *orderItem = new QTreeWidgetItem();
+                    double rate = 0;
+                    double quantity = 0;
 
                     if (orderObject.contains("Rate")) {
-                        double rate = orderObject["Rate"].toDouble();
+                        rate = orderObject["Rate"].toDouble();
                         orderItem->setText(0, QSTRING_DOUBLE(rate));
 
                         double satoshi = rate * 100000000;
@@ -375,10 +390,15 @@ void PoolBrowser::parseBittrexOrders(QNetworkReply *replay)
                         volumeBuy[i] = cumulation;
                     }
                     if (orderObject.contains("Quantity")) {
-                        double quantity = orderObject["Quantity"].toDouble();
+                        quantity = orderObject["Quantity"].toDouble();
                         orderItem->setText(1, QSTRING_DOUBLE(quantity));
-
                         cumulation += quantity;
+                    }
+
+                    if (orderObject.contains("Rate") && orderObject.contains("Quantity"))
+                    {
+                        double total = rate * quantity;
+                        orderItem->setText(2, QSTRING_DOUBLE(total));
                     }
 
                     ui->buyQuantityTable->addTopLevelItem(orderItem);
@@ -397,9 +417,11 @@ void PoolBrowser::parseBittrexOrders(QNetworkReply *replay)
                foreach (const QJsonValue &order, sellArray) {
                     QJsonObject orderObject = order.toObject();
                     QTreeWidgetItem *orderItem = new QTreeWidgetItem();
+                    double rate = 0;
+                    double quantity = 0;
 
                     if (orderObject.contains("Rate")) {
-                        double rate = orderObject["Rate"].toDouble();
+                        rate = orderObject["Rate"].toDouble();
                         orderItem->setText(0, QSTRING_DOUBLE(rate));
 
                         double satoshi = rate * 100000000;
@@ -408,11 +430,18 @@ void PoolBrowser::parseBittrexOrders(QNetworkReply *replay)
                         volumeSell[i] = cumulation;
                     }
                     if (orderObject.contains("Quantity")) {
-                        double quantity = orderObject["Quantity"].toDouble();
+                        quantity = orderObject["Quantity"].toDouble();
                         orderItem->setText(1, QSTRING_DOUBLE(quantity));
 
                         cumulation += quantity;
                     }
+
+                    if (orderObject.contains("Rate") && orderObject.contains("Quantity"))
+                    {
+                        double total = rate * quantity;
+                        orderItem->setText(2, QSTRING_DOUBLE(total));
+                    }
+
                     ui->sellQuantityTable->addTopLevelItem(orderItem);
                 }
            }
@@ -467,11 +496,11 @@ void PoolBrowser::parseBittrexHistory(QNetworkReply *replay)
                }
                if (tradeObject.contains("Quantity")) {
                    double quantity = tradeObject["Quantity"].toDouble();
-                   tradeItem->setText(1, QSTRING_DOUBLE(quantity));
+                   tradeItem->setText(2, QSTRING_DOUBLE(quantity));
                }
                if (tradeObject.contains("Price")) {
                    double rate = tradeObject["Price"].toDouble();
-                   tradeItem->setText(2, QSTRING_DOUBLE(rate));
+                   tradeItem->setText(1, QSTRING_DOUBLE(rate));
 
                    count[i]  = resultArray.count() - i;
                    prices[i] = rate * 100000000;
@@ -1039,6 +1068,7 @@ void PoolBrowser::openUrl(const QString &url)
 
 void PoolBrowser::downloadAllMarketsData()
 {
+    this->getRequest(kCurrencyUSDUrl);
     this->downloadBittrexMarketData();
     //this->downloadMintPalMarketData();
     this->downloadCryptsyMarketData();
