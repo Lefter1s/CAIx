@@ -532,7 +532,7 @@ void BitcoinGUI::createToolBars()
     extraFunctionsBar->setMovable(false);
     extraFunctionsBar->setFixedWidth(200);
     extraFunctionsBar->setFixedHeight(60);
-    extraFunctionsBar->setStyleSheet("QToolBar {border:0px;} QToolBar QToolButton:hover{color: #F37255;} QToolBar QToolButton:checked {color: #F37255;} QToolBar QToolButton{margin-bottom:13px; font-size:11px; font-family:'Open Sans Extrabold'; color:#33363B; text-align:right; background:transparent; text-transform:uppercase; height:100%; padding-left:20px;}");
+    extraFunctionsBar->setStyleSheet("QToolBar {border:0px;} QToolBar QToolButton:hover{color: #F37255;} QToolBar QToolButton:checked {color: #F37255;} QToolBar QToolButton{margin-bottom:25px; font-size:11px; font-family:'Open Sans Extrabold'; color:#33363B; text-align:right; background:transparent; text-transform:uppercase; height:100%; padding-left:20px;}");
     QWidget* extraSpacer = new QWidget();
     extraSpacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     extraFunctionsBar->addWidget(extraSpacer);
