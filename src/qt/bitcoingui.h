@@ -17,7 +17,6 @@ class SendCoinsDialog;
 class SignVerifyMessageDialog;
 class Notificator;
 class RPCConsole;
-class ChatWindow;
 class ActionsMenu;
 
 QT_BEGIN_NAMESPACE
@@ -70,7 +69,6 @@ private:
     StatisticsPage *statisticsPage;
     BlockBrowser *blockBrowser;
     PoolBrowser *poolBrowser;
-    ChatWindow *chatWindow;
     QWidget *transactionsPage;
     QWidget *settingsPage;
     AddressBookPage *addressBookPage;
@@ -190,7 +188,6 @@ private slots:
     /** Switch to send coins page */
     void gotoSendCoinsPage();
 
-    void gotoChatPage();
     void gotoSettingsPage();
 
     /** Show Sign/Verify Message dialog and switch to sign message tab */

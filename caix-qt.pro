@@ -1,6 +1,6 @@
 TEMPLATE = app
 TARGET = CAIx-qt
-VERSION = 1.1.2.1
+VERSION = 1.1.2.2
 INCLUDEPATH += src src/json src/qt
 QT += core gui network
 DEFINES += QT_GUI BOOST_THREAD_USE_LIB BOOST_SPIRIT_THREADSAFE
@@ -11,10 +11,6 @@ greaterThan(QT_MAJOR_VERSION, 4) {
     QT += widgets printsupport
     DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0
 }
-
-USE_IPV6=-
-USE_UPNP=-
-USE_QRCODE=1
 
 win32:BOOST_LIB_SUFFIX=-mgw49-mt-s-1_57
 win32:BOOST_INCLUDE_PATH=C:/deps/boost_1_57_0
@@ -28,14 +24,19 @@ win32:MINIUPNPC_LIB_PATH=C:/deps/miniupnpc
 win32:QRENCODE_INCLUDE_PATH=C:/deps/qrencode-3.4.4
 win32:QRENCODE_LIB_PATH=C:/deps/qrencode-3.4.4/.libs
 
-macx:BOOST_INCLUDE_PATH=/opt/local/include/boost
-macx:BOOST_LIB_PATH=/opt/local/lib
-macx:OPENSSL_INCLUDE_PATH=/opt/local/include/openssl
-macx:OPENSSL_LIB_PATH=/opt/local/lib
-macx:MINIUPNPC_INCLUDE_PATH=/opt/local/include/miniupnpc
-macx:MINIUPNPC_LIB_PATH=/opt/local/lib
-macx:QRENCODE_INCLUDE_PATH=/opt/local/include
-macx:QRENCODE_LIB_PATH=/opt/local/lib
+#macx:BOOST_LIB_SUFFIX= -mt
+#macx:BOOST_INCLUDE_PATH=/usr/local/include
+#macx:BOOST_LIB_PATH=/usr/local/lib
+#macx:BDB_INCLUDE_PATH = /usr/local/include
+#macx:BDB_LIB_PATH = /usr/local/lib
+#macx:OPENSSL_INCLUDE_PATH=/usr/local/include
+#macx:OPENSSL_LIB_PATH=/usr/local/lib
+#macx:MINIUPNPC_INCLUDE_PATH=/usr/local/include
+#macx:MINIUPNPC_LIB_PATH=/usr/local/lib
+#macx:QRENCODE_INCLUDE_PATH=/usr/local/include
+#macx:QRENCODE_LIB_PATH=/usr/local/lib
+
+macx:QMAKE_CFLAGS += -no-integrated-as
 
 OBJECTS_DIR = build
 MOC_DIR = build
@@ -43,12 +44,18 @@ UI_DIR = build
 
 # use: qmake "RELEASE=1"
 contains(RELEASE, 1) {
-    # Mac: compile for maximum compatibility (10.7, 64-bit)
-    macx:QMAKE_CXXFLAGS += -mmacosx-version-min=10.7 -arch x86_64 -isysroot /Developer/SDKs/MacOSX10.7.sdk
+    # Mac: compile for maximum compatibility (10.7, 64-bit CPU)
+    macx:QMAKE_CXXFLAGS += -mmacosx-version-min=10.7 -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk
+
+    USE_IPV6=1
+    USE_UPNP=1
+    USE_QRCODE=1
+    USE_O3=1
 
     !windows:!macx {
-        # Linux: static link and extra security (see: https://wiki.debian.org/Hardening)
+        # Linux: static link
         LIBS += -Wl,-Bstatic
+        USE_DBUS=1
     }
 }
 
@@ -62,7 +69,7 @@ contains(RELEASE, 1) {
 
 # for extra security on Windows: enable ASLR and DEP via GCC linker flags
 win32:QMAKE_LFLAGS *= -Wl,--dynamicbase -Wl,--nxcompat
-win32:QMAKE_LFLAGS += -static-libgcc -static-libstdc++
+win32:QMAKE_LFLAGS *= -Wl,--large-address-aware -static
 
 # use: qmake "USE_QRCODE=1"
 # libqrencode (http://fukuchi.org/works/qrencode/index.en.html) must be installed for support
@@ -89,10 +96,8 @@ contains(USE_UPNP, -) {
     win32:LIBS += -liphlpapi
 }
 
-# use: qmake "USE_DBUS=1" or qmake "USE_DBUS=0"
-linux:count(USE_DBUS, 0) {
-    USE_DBUS=1
-}
+
+# use: qmake "USE_DBUS=1"
 contains(USE_DBUS, 1) {
     message(Building with DBUS (Freedesktop notifications) support)
     DEFINES += USE_DBUS
@@ -105,6 +110,7 @@ contains(USE_DBUS, 1) {
 contains(USE_IPV6, -) {
     message(Building without IPv6 support)
 } else {
+    message(Building with IPv6 support)
     count(USE_IPV6, 0) {
         USE_IPV6=1
     }
@@ -115,6 +121,23 @@ contains(BITCOIN_NEED_QT_PLUGINS, 1) {
     DEFINES += BITCOIN_NEED_QT_PLUGINS
     QTPLUGIN += qcncodecs qjpcodecs qtwcodecs qkrcodecs qtaccessiblewidgets
 }
+
+contains(USE_O3, 1) {
+    message(Building O3 optimization flag)
+    QMAKE_CXXFLAGS_RELEASE -= -O2 -Wno-deprecated
+    QMAKE_CFLAGS_RELEASE -= -O2 -Wno-deprecated
+    QMAKE_CXXFLAGS += -O3 -Wno-deprecated
+    QMAKE_CFLAGS += -O3 -Wno-deprecated
+}
+
+*-g++-32 {
+    message("32 platform, adding -msse2 flag")
+
+    QMAKE_CXXFLAGS += -msse2
+    QMAKE_CFLAGS += -msse2
+}
+
+QMAKE_CXXFLAGS_WARN_ON = -fdiagnostics-show-option -Wall -Wextra -Wno-ignored-qualifiers -Wformat -Wformat-security -Wno-unused-parameter -Wstack-protector
 
 INCLUDEPATH += src/leveldb/include src/leveldb/helpers
 LIBS += $$PWD/src/leveldb/libleveldb.a $$PWD/src/leveldb/libmemenv.a
@@ -128,7 +151,7 @@ SOURCES += src/txdb-leveldb.cpp
         QMAKE_RANLIB = $$replace(QMAKE_STRIP, strip, ranlib)
     }
     LIBS += -lshlwapi
-    genleveldb.commands = cd $$PWD/src/leveldb && CC=$$QMAKE_CC CXX=$$QMAKE_CXX TARGET_OS=OS_WINDOWS_CROSSCOMPILE $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\" libleveldb.a libmemenv.a && $$QMAKE_RANLIB $$PWD/src/leveldb/libleveldb.a && $$QMAKE_RANLIB $$PWD/src/leveldb/libmemenv.a
+#    genleveldb.commands = cd $$PWD/src/leveldb && CC=$$QMAKE_CC CXX=$$QMAKE_CXX TARGET_OS=OS_WINDOWS_CROSSCOMPILE $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\" libleveldb.a libmemenv.a && $$QMAKE_RANLIB $$PWD/src/leveldb/libleveldb.a && $$QMAKE_RANLIB $$PWD/src/leveldb/libmemenv.a
 }
 genleveldb.target = $$PWD/src/leveldb/libleveldb.a
 genleveldb.depends = FORCE
@@ -143,26 +166,9 @@ QMAKE_CLEAN += $$PWD/src/leveldb/libleveldb.a; cd $$PWD/src/leveldb ; $(MAKE) cl
     genbuild.commands = cd $$PWD; /bin/sh share/genbuild.sh $$OUT_PWD/build/build.h
     genbuild.target = $$OUT_PWD/build/build.h
     PRE_TARGETDEPS += $$OUT_PWD/build/build.h
-        QMAKE_EXTRA_TARGETS += genbuild
-            DEFINES += HAVE_BUILD_INFO
+    QMAKE_EXTRA_TARGETS += genbuild
+    DEFINES += HAVE_BUILD_INFO
 }
-
-contains(USE_O3, 1) {
-    message(Building O3 optimization flag)
-    QMAKE_CXXFLAGS_RELEASE -= -O2
-    QMAKE_CFLAGS_RELEASE -= -O2
-    QMAKE_CXXFLAGS += -O3
-    QMAKE_CFLAGS += -O3
-}
-
-*-g++-32 {
-    message("32 platform, adding -msse2 flag")
-
-    QMAKE_CXXFLAGS += -msse2
-    QMAKE_CFLAGS += -msse2
-}
-
-QMAKE_CXXFLAGS_WARN_ON = -fdiagnostics-show-option -Wall -Wextra -Wno-ignored-qualifiers -Wformat -Wformat-security -Wno-unused-parameter -Wstack-protector
 
 # Input
 DEPENDPATH += src src/json src/qt
@@ -261,8 +267,6 @@ HEADERS += src/qt/bitcoingui.h \
     src/version.h \
     src/netbase.h \
     src/clientversion.h \
-    src/qt/chatwindow.h \
-    src/qt/serveur.h \
     src/qt/qcustomplot.h \
     src/qt/actionsmenu.h \
 
@@ -278,7 +282,6 @@ SOURCES += src/qt/bitcoin.cpp src/qt/bitcoingui.cpp \
     src/qt/aboutdialog.cpp \
     src/qt/editaddressdialog.cpp \
     src/qt/bitcoinaddressvalidator.cpp \
-    src/qt/chatwindow.cpp \
     src/qt/actionsmenu.cpp \
     src/alert.cpp \
     src/version.cpp \
@@ -335,7 +338,6 @@ SOURCES += src/qt/bitcoin.cpp src/qt/bitcoingui.cpp \
     src/qt/rpcconsole.cpp \
     src/qt/qcustomplot.cpp \
     src/qt/poolbrowser.cpp \
-    src/qt/serveur.cpp \
     src/noui.cpp \
     src/kernel.cpp \
     src/scrypt-arm.S \
@@ -376,7 +378,6 @@ FORMS += \
     src/qt/forms/optionsdialog.ui \
     src/qt/forms/tutoStackDialog.ui \
     src/qt/forms/tutoWriteDialog.ui \
-    src/qt/forms/chatwindow.ui \
     src/qt/forms/actionsmenu.ui
 
 contains(USE_QRCODE, 1) {

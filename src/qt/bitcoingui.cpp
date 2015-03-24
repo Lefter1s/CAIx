@@ -24,7 +24,6 @@
 #include "statisticspage.h"
 #include "blockbrowser.h"
 #include "poolbrowser.h"
-#include "chatwindow.h"
 #include "bitcoinunits.h"
 #include "guiconstants.h"
 #include "askpassphrasedialog.h"
@@ -118,7 +117,6 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     // Create navigation tabs
     overviewPage = new OverviewPage();
     statisticsPage = new StatisticsPage(this);
-    chatWindow = new ChatWindow(this);
 	blockBrowser = new BlockBrowser(this);
 	poolBrowser = new PoolBrowser(this);
     transactionsPage = new QWidget(this);
@@ -138,7 +136,6 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     centralWidget->setStyleSheet("margin-left:1px");
     centralWidget->addWidget(overviewPage);
     centralWidget->addWidget(statisticsPage);
-    centralWidget->addWidget(chatWindow);
     centralWidget->addWidget(blockBrowser);
 	centralWidget->addWidget(poolBrowser);
     centralWidget->addWidget(transactionsPage);
@@ -271,12 +268,6 @@ void BitcoinGUI::createActions()
     poolAction->setCheckable(true);
     tabGroup->addAction(poolAction);
 
-    chatAction = new QAction(tr("&Social"), this);
-    chatAction->setToolTip(tr("View social media info"));
-    chatAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_7));
-    chatAction->setCheckable(true);
-    tabGroup->addAction(chatAction);
-
     blockAction = new QAction(tr("&Block Explorer"), this);
     blockAction->setToolTip(tr("Explore the CAIx blockchain"));
     blockAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_8));
@@ -317,8 +308,6 @@ void BitcoinGUI::createActions()
     connect(overviewAction, SIGNAL(triggered()), this, SLOT(gotoOverviewPage()));
     connect(statisticsAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
     connect(statisticsAction, SIGNAL(triggered()), this, SLOT(gotoStatisticsPage()));
-    connect(chatAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
-    connect(chatAction, SIGNAL(triggered()), this, SLOT(gotoChatPage()));
     connect(historyAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
     connect(historyAction, SIGNAL(triggered()), this, SLOT(gotoHistoryPage()));
     connect(addressBookAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
@@ -529,10 +518,9 @@ void BitcoinGUI::createToolBars()
     navigationBar->addAction(historyAction);
     navigationBar->addAction(addressBookAction);
     navigationBar->addAction(poolAction);
-    navigationBar->addAction(chatAction);
     navigationBar->addAction(blockAction);
     navigationBar->addAction(settingsAction);
-    navigationBar->setStyleSheet("QToolBar {border-style: none outset none outset; border-width:1px; border-color:#33363B; background-image: url(:/images/menu); background-repeat:no-repeat;} QToolBar QToolButton:hover{color: #F37255;} QToolBar QToolButton:checked {color: #F37255;} QToolBar QToolButton{font-weight:bold; margin-bottom:12px; padding-left:8px; font-size:10px; font-family:'Open Sans Extrabold'; color:#848890; text-align:left; background:transparent; text-transform:uppercase; height:100%;}");
+    navigationBar->setStyleSheet("QToolBar {border-style: none outset none outset; border-width:1px; border-color:#33363B; background-image: url(:/images/menu); background-repeat:no-repeat;} QToolBar QToolButton:hover{color: #F37255;} QToolBar QToolButton:checked {color: #F37255;} QToolBar QToolButton{font-weight:bold; margin-bottom:25px; padding-left:8px; font-size:11px; font-family:'Open Sans Extrabold'; color:#848890; text-align:left; background:transparent; text-transform:uppercase; height:100%;}");
     insertToolBarBreak(navigationBar);
 
     //Export and Settings bar
@@ -618,7 +606,6 @@ void BitcoinGUI::setWalletModel(WalletModel *walletModel)
         sendCoinsPage->setModel(walletModel);
         signVerifyMessageDialog->setModel(walletModel);
         statisticsPage->setModel(clientModel);
-        chatWindow->setModel(clientModel);
         blockBrowser->setModel(clientModel);
         poolBrowser->setModel(clientModel);
         setEncryptionStatus(walletModel->getEncryptionStatus());
@@ -668,7 +655,7 @@ void BitcoinGUI::createTrayIcon()
     trayIconMenu->addAction(quitAction2);
 #endif
 
-    notificator = new Notificator(qApp->applicationName(), trayIcon);
+    notificator = new Notificator(QApplication::applicationName(), trayIcon, this);
 }
 
 #ifndef Q_OS_MAC
@@ -1049,21 +1036,6 @@ void BitcoinGUI::gotoStatisticsPage()
     disconnect(exportAction, SIGNAL(triggered()), 0, 0);
     wId->raise();
 }
-
-void BitcoinGUI::gotoChatPage()
-{
-    chatAction->setChecked(true);
-    centralWidget->setCurrentWidget(chatWindow);
-    actionConvertIcon->setEnabled(false);
-    actionConvertIcon->setVisible(false);
-    disconnect(actionConvertIcon, SIGNAL(triggered()), 0, 0);
-    connect(actionConvertIcon, SIGNAL(triggered()), this, SLOT(sConvert()));
-    exportAction->setVisible(false);
-    exportAction->setEnabled(false);
-    disconnect(exportAction, SIGNAL(triggered()), 0, 0);
-    wId->raise();
-}
-
 
 void BitcoinGUI::gotoHistoryPage()
 {

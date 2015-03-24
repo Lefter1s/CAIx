@@ -206,7 +206,7 @@
        </property>
        <widget class="QWidget" name="mainsBittrex">
         <attribute name="title">
-         <string>Main</string>
+         <string>Price Details</string>
         </attribute>
         <widget class="QWidget" name="view1_4" native="true">
          <property name="geometry">
@@ -226,9 +226,9 @@
          <widget class="QWidget" name="Last_10" native="true">
           <property name="geometry">
            <rect>
-            <x>140</x>
+            <x>150</x>
             <y>60</y>
-            <width>130</width>
+            <width>140</width>
             <height>81</height>
            </rect>
           </property>
@@ -256,7 +256,7 @@
             <rect>
              <x>10</x>
              <y>40</y>
-             <width>105</width>
+             <width>115</width>
              <height>16</height>
             </rect>
            </property>
@@ -272,7 +272,7 @@
             <rect>
              <x>10</x>
              <y>60</y>
-             <width>91</width>
+             <width>110</width>
              <height>16</height>
             </rect>
            </property>
@@ -287,9 +287,9 @@
          <widget class="QWidget" name="Last_11" native="true">
           <property name="geometry">
            <rect>
-            <x>270</x>
+            <x>290</x>
             <y>60</y>
-            <width>130</width>
+            <width>140</width>
             <height>81</height>
            </rect>
           </property>
@@ -314,7 +314,7 @@
             <rect>
              <x>10</x>
              <y>40</y>
-             <width>105</width>
+             <width>115</width>
              <height>16</height>
             </rect>
            </property>
@@ -327,7 +327,7 @@
             <rect>
              <x>10</x>
              <y>60</y>
-             <width>91</width>
+             <width>110</width>
              <height>16</height>
             </rect>
            </property>
@@ -354,7 +354,7 @@
            <rect>
             <x>10</x>
             <y>60</y>
-            <width>130</width>
+            <width>140</width>
             <height>81</height>
            </rect>
           </property>
@@ -382,7 +382,7 @@
             <rect>
              <x>10</x>
              <y>40</y>
-             <width>105</width>
+             <width>115</width>
              <height>16</height>
             </rect>
            </property>
@@ -398,7 +398,7 @@
             <rect>
              <x>10</x>
              <y>60</y>
-             <width>91</width>
+             <width>110</width>
              <height>16</height>
             </rect>
            </property>
@@ -506,7 +506,7 @@
            <rect>
             <x>11</x>
             <y>21</y>
-            <width>70</width>
+            <width>80</width>
             <height>25</height>
            </rect>
           </property>
@@ -548,6 +548,12 @@
             <height>121</height>
            </rect>
           </property>
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOn</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
           <property name="indentation">
            <number>0</number>
           </property>
@@ -555,10 +561,13 @@
            <number>3</number>
           </property>
           <attribute name="headerDefaultSectionSize">
-           <number>150</number>
+           <number>140</number>
           </attribute>
           <attribute name="headerMinimumSectionSize">
-           <number>50</number>
+           <number>140</number>
+          </attribute>
+          <attribute name="headerStretchLastSection">
+           <bool>true</bool>
           </attribute>
           <column>
            <property name="text">
@@ -585,11 +594,32 @@
             <height>121</height>
            </rect>
           </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOn</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="autoScroll">
+           <bool>false</bool>
+          </property>
           <property name="autoScrollMargin">
-           <number>8</number>
+           <number>0</number>
+          </property>
+          <property name="horizontalScrollMode">
+           <enum>QAbstractItemView::ScrollPerItem</enum>
           </property>
           <property name="indentation">
            <number>0</number>
+          </property>
+          <property name="itemsExpandable">
+           <bool>true</bool>
           </property>
           <property name="sortingEnabled">
            <bool>false</bool>
@@ -597,17 +627,26 @@
           <property name="animated">
            <bool>true</bool>
           </property>
+          <property name="expandsOnDoubleClick">
+           <bool>false</bool>
+          </property>
           <property name="columnCount">
            <number>3</number>
           </property>
+          <attribute name="headerCascadingSectionResizes">
+           <bool>true</bool>
+          </attribute>
           <attribute name="headerDefaultSectionSize">
-           <number>150</number>
+           <number>140</number>
           </attribute>
           <attribute name="headerMinimumSectionSize">
-           <number>110</number>
+           <number>140</number>
           </attribute>
           <attribute name="headerShowSortIndicator" stdset="0">
            <bool>false</bool>
+          </attribute>
+          <attribute name="headerStretchLastSection">
+           <bool>true</bool>
           </attribute>
           <column>
            <property name="text">
@@ -645,7 +684,7 @@
        </widget>
        <widget class="QWidget" name="graphsBittrex">
         <attribute name="title">
-         <string>Graphs</string>
+         <string>Trade History</string>
         </attribute>
         <widget class="QFrame" name="view2_4">
          <property name="geometry">
@@ -667,7 +706,7 @@
            <rect>
             <x>10</x>
             <y>0</y>
-            <width>460</width>
+            <width>931</width>
             <height>161</height>
            </rect>
           </property>
@@ -747,32 +786,6 @@
            </property>
           </column>
          </widget>
-         <widget class="QLabel" name="label_49">
-          <property name="geometry">
-           <rect>
-            <x>492</x>
-            <y>161</y>
-            <width>211</width>
-            <height>20</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Order depth &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-         </widget>
-         <widget class="QCustomPlot" name="volumeSatoshiPlotBittrex" native="true">
-          <property name="geometry">
-           <rect>
-            <x>492</x>
-            <y>0</y>
-            <width>460</width>
-            <height>161</height>
-           </rect>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">background:none;</string>
-          </property>
-         </widget>
         </widget>
        </widget>
       </widget>
@@ -850,7 +863,7 @@
        </property>
        <widget class="QWidget" name="mainsMintPal_2">
         <attribute name="title">
-         <string>Main</string>
+         <string>Price Details</string>
         </attribute>
         <widget class="QWidget" name="view1_3" native="true">
          <property name="geometry">
@@ -867,9 +880,9 @@
          <widget class="QWidget" name="Last_7" native="true">
           <property name="geometry">
            <rect>
-            <x>140</x>
+            <x>150</x>
             <y>60</y>
-            <width>130</width>
+            <width>140</width>
             <height>81</height>
            </rect>
           </property>
@@ -897,7 +910,7 @@
             <rect>
              <x>10</x>
              <y>40</y>
-             <width>105</width>
+             <width>115</width>
              <height>16</height>
             </rect>
            </property>
@@ -913,7 +926,7 @@
             <rect>
              <x>10</x>
              <y>60</y>
-             <width>91</width>
+             <width>110</width>
              <height>16</height>
             </rect>
            </property>
@@ -928,9 +941,9 @@
          <widget class="QWidget" name="Last_8" native="true">
           <property name="geometry">
            <rect>
-            <x>270</x>
+            <x>290</x>
             <y>60</y>
-            <width>130</width>
+            <width>140</width>
             <height>81</height>
            </rect>
           </property>
@@ -955,7 +968,7 @@
             <rect>
              <x>10</x>
              <y>40</y>
-             <width>105</width>
+             <width>115</width>
              <height>16</height>
             </rect>
            </property>
@@ -968,7 +981,7 @@
             <rect>
              <x>10</x>
              <y>60</y>
-             <width>91</width>
+             <width>110</width>
              <height>16</height>
             </rect>
            </property>
@@ -995,7 +1008,7 @@
            <rect>
             <x>10</x>
             <y>60</y>
-            <width>130</width>
+            <width>140</width>
             <height>81</height>
            </rect>
           </property>
@@ -1023,7 +1036,7 @@
             <rect>
              <x>10</x>
              <y>40</y>
-             <width>105</width>
+             <width>115</width>
              <height>16</height>
             </rect>
            </property>
@@ -1039,7 +1052,7 @@
             <rect>
              <x>10</x>
              <y>60</y>
-             <width>91</width>
+             <width>110</width>
              <height>16</height>
             </rect>
            </property>
@@ -1173,6 +1186,9 @@
             <height>121</height>
            </rect>
           </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
           <property name="indentation">
            <number>0</number>
           </property>
@@ -1180,10 +1196,10 @@
            <number>3</number>
           </property>
           <attribute name="headerDefaultSectionSize">
-           <number>150</number>
+           <number>140</number>
           </attribute>
           <attribute name="headerMinimumSectionSize">
-           <number>50</number>
+           <number>140</number>
           </attribute>
           <column>
            <property name="text">
@@ -1210,6 +1226,9 @@
             <height>121</height>
            </rect>
           </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
           <property name="autoScrollMargin">
            <number>8</number>
           </property>
@@ -1226,10 +1245,10 @@
            <number>3</number>
           </property>
           <attribute name="headerDefaultSectionSize">
-           <number>150</number>
+           <number>140</number>
           </attribute>
           <attribute name="headerMinimumSectionSize">
-           <number>50</number>
+           <number>140</number>
           </attribute>
           <attribute name="headerShowSortIndicator" stdset="0">
            <bool>false</bool>
@@ -1270,7 +1289,7 @@
        </widget>
        <widget class="QWidget" name="graphsMintPal_2">
         <attribute name="title">
-         <string>Graphs</string>
+         <string>Trade History</string>
         </attribute>
         <widget class="QFrame" name="view2_3">
          <property name="geometry">
@@ -1286,7 +1305,7 @@
            <rect>
             <x>10</x>
             <y>0</y>
-            <width>460</width>
+            <width>931</width>
             <height>161</height>
            </rect>
           </property>
@@ -1368,32 +1387,6 @@
             <string>Time</string>
            </property>
           </column>
-         </widget>
-         <widget class="QLabel" name="label_44">
-          <property name="geometry">
-           <rect>
-            <x>492</x>
-            <y>161</y>
-            <width>211</width>
-            <height>20</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Order depth &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-         </widget>
-         <widget class="QCustomPlot" name="orderCryptsyPlot" native="true">
-          <property name="geometry">
-           <rect>
-            <x>492</x>
-            <y>0</y>
-            <width>460</width>
-            <height>161</height>
-           </rect>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">background:none;</string>
-          </property>
          </widget>
         </widget>
        </widget>

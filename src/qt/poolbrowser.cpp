@@ -20,7 +20,7 @@ const QString kMintPalPage = "https://www.mintpal.com/market/CAIx/BTC";
 const QString kCryptsyPage = "https://www.cryptsy.com/markets/view/221";
 
 // Bitcoin to USD
-const QString kCurrencyUSDUrl    = "https://www.bitstamp.net/api/ticker/";
+const QString kCurrencyUSDUrl    = "http://api.coindesk.com/v1/bpi/currentprice.json";
 
 // Bittrex API urls
 const QString kBittrexSummaryUrl        = "http://bittrex.com/api/v1.1/public/getmarketsummary?market=btc-caix";
@@ -90,8 +90,13 @@ PoolBrowser::PoolBrowser(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::PoolBrowser)
 {
-    this->getRequest(kCurrencyUSDUrl);
     ui->setupUi(this);
+    ui->sellQuantityTable->header()->setResizeMode(QHeaderView::Fixed);
+    ui->buyQuantityTable->header()->setResizeMode(QHeaderView::Fixed);
+    ui->sellTableCryptsy->header()->setResizeMode(QHeaderView::Fixed);
+    ui->buyTableCryptsy->header()->setResizeMode(QHeaderView::Fixed);
+    ui->tradesCryptsyTable->header()->setResizeMode(QHeaderView::Fixed);
+    ui->tradesTableBittrex->header()->setResizeMode(QHeaderView::Fixed);
     setFixedSize(400, 420);
 
     this->setupBittrexGraphs();
@@ -100,6 +105,8 @@ PoolBrowser::PoolBrowser(QWidget *parent) :
 
     QObject::connect(&m_nam, SIGNAL(finished(QNetworkReply*)), this, SLOT(parseNetworkResponse(QNetworkReply*)));
     connect(ui->egal, SIGNAL(pressed()), this, SLOT(egaldo()));
+
+    updateBitcoinPrice();
 
     this->setupBittrexTabSlots();
     //this->setupMintPalTabSlots();
@@ -111,15 +118,13 @@ PoolBrowser::PoolBrowser(QWidget *parent) :
 void PoolBrowser::setupBittrexGraphs()
 {
     ui->pricesBittrexPlot->addGraph();
-    ui->volumeSatoshiPlotBittrex->addGraph();
-    ui->volumeSatoshiPlotBittrex->addGraph();
 }
 
 void PoolBrowser::setupBittrexTabSlots()
 {
     connect(ui->refreshBittrexButton, SIGNAL(pressed()), this, SLOT(updateBitcoinPrice()));
     connect(ui->refreshBittrexButton, SIGNAL(pressed()), this, SLOT(downloadBittrexMarketData()));
-    connect(ui->bittrexButton, SIGNAL(pressed()), this, SLOT( openBittrexPage()));
+    connect(ui->bittrexButton, SIGNAL(pressed()), this, SLOT(openBittrexPage()));
 }
 
 //void PoolBrowser::setupMintPalGraphs()
@@ -144,8 +149,6 @@ void PoolBrowser::updateBitcoinPrice()
 void PoolBrowser::setupCryptsyGraphs()
 {
     ui->priceCryptsyPlot->addGraph();
-    ui->orderCryptsyPlot->addGraph();
-    ui->orderCryptsyPlot->addGraph();
 }
 
 void PoolBrowser::setupCryptsyTabSlots()
@@ -168,7 +171,6 @@ void PoolBrowser::getRequest( const QString &urlString )
     QUrl url ( urlString );
     QNetworkRequest req ( url );
     QSslConfiguration config = QSslConfiguration::defaultConfiguration();
-    config.setProtocol(QSsl::SslV3);
     req.setSslConfiguration(config);
     req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json; charset=utf-8");
     m_nam.get(req);
@@ -226,24 +228,24 @@ void PoolBrowser::parseNetworkResponse(QNetworkReply *finished )
     finished->deleteLater();
 }
 
-void PoolBrowser::parseCurrencyUSD(QNetworkReply *replay)
+void PoolBrowser::parseCurrencyUSD(QNetworkReply *reply)
 {
     // QNetworkReply is a QIODevice. So we read from it just like it was a file
-    QString data = replay->readAll();
+    QString data = reply->readAll();
     QString bitcoin;
 
     QJsonParseError jsonParseError;
     QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8(), &jsonParseError);
     if (jsonResponse.isObject()) {
 
-       QJsonObject mainObject = jsonResponse.object();
+        QJsonObject mainObject = jsonResponse.object();
 
-       if (mainObject.contains("last")) {
-            bitcoin = mainObject["last"].toString();
+        if (mainObject.contains("bpi")) {
+            QJsonObject bpiObject = mainObject["bpi"].toObject();
+            QJsonObject USDObject = bpiObject["USD"].toObject();
+            bitcoin = USDObject["rate"].toString();
             bitcoinToUSD = bitcoin.toDouble();
-
-            qDebug() << "Current bitcoin price in USD:" << bitcoin;
-       }
+        }
     }
 
     if(bitcoin > bitcoinp) {
@@ -445,8 +447,6 @@ void PoolBrowser::parseBittrexOrders(QNetworkReply *replay)
                     ui->sellQuantityTable->addTopLevelItem(orderItem);
                 }
            }
-
-           this->updateVolumeSatoshiPlot(satoshiSell, satoshiBuy, volumeSell, volumeBuy, ui->volumeSatoshiPlotBittrex);
        }
 
     } else {
@@ -1038,7 +1038,6 @@ void PoolBrowser::parseCryptsyOrders(QNetworkReply *replay)
 
 
                 }
-                this->updateVolumeSatoshiPlot(satoshiSell, satoshiBuy, volumeBuy, volumeSell, ui->orderCryptsyPlot);
             }
         }
     } else {
@@ -1224,37 +1223,8 @@ void PoolBrowser::updatePricesPlot(const QVector<double> &count, const QVector<d
     plot->graph(0)->setData(count, prices);
     plot->graph(0)->setPen(QPen(QColor(34, 177, 76)));
     plot->graph(0)->setBrush(QBrush(QColor(34, 177, 76, 20)));
-    plot->xAxis->setRange(1, prices.count());
+    plot->xAxis->setRange(0, prices.count());
     plot->yAxis->setRange(min, max);
-    plot->replot();
-}
-
-void PoolBrowser::updateVolumeSatoshiPlot(const QVector<double> &satoshiSell, QVector<double> &satoshiBuy, const QVector<double> &volumeSell, const QVector<double> &volumeBuy, QCustomPlot *plot)
-{
-    double min = this->getMinValueFromVector(satoshiBuy);
-    double max = this->getMaxValueFromVector(satoshiSell);
-    double maxCumulationSell = this->getMaxValueFromVector(volumeSell);
-    double maxCumulationBuy = this->getMaxValueFromVector(volumeBuy);
-    double maxCumulation;
-    if (maxCumulationSell > maxCumulationBuy) {
-        maxCumulation = maxCumulationSell;
-    } else {
-        maxCumulation = maxCumulationBuy;
-    }
-
-    // create graph and assign data to it:
-    plot->graph(0)->setData(satoshiBuy, volumeBuy);
-    plot->graph(1)->setData(satoshiSell, volumeSell);
-
-    plot->graph(0)->setPen(QPen(QColor(34, 177, 76)));
-    plot->graph(0)->setBrush(QBrush(QColor(34, 177, 76, 20)));
-    plot->graph(1)->setPen(QPen(QColor(237, 24, 35)));
-    plot->graph(1)->setBrush(QBrush(QColor(237, 24, 35, 20)));
-
-    // set axes ranges, so we see all data:
-    plot->xAxis->setRange(min, max);
-    plot->yAxis->setRange(min, maxCumulation);
-
     plot->replot();
 }
 
