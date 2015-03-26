@@ -520,7 +520,7 @@ void BitcoinGUI::createToolBars()
     navigationBar->addAction(poolAction);
     navigationBar->addAction(blockAction);
     navigationBar->addAction(settingsAction);
-    navigationBar->setStyleSheet("QToolBar {border-style: none outset none outset; border-width:1px; border-color:#33363B; background-image: url(:/images/menu); background-repeat:no-repeat;} QToolBar QToolButton:hover{color: #F37255;} QToolBar QToolButton:checked {color: #F37255;} QToolBar QToolButton{font-weight:bold; margin-bottom:25px; padding-left:8px; font-size:11px; font-family:'Open Sans Extrabold'; color:#848890; text-align:left; background:transparent; text-transform:uppercase; height:100%;}");
+    navigationBar->setStyleSheet("QToolBar {border-style: none outset none outset; border-width:1px; border-color:#33363B; background-image: url(:/images/menu); background-repeat:no-repeat;} QToolBar QToolButton:hover{color: #F37255;} QToolBar QToolButton:checked {color: #F37255;} QToolBar QToolButton{font-weight:bold; margin-bottom:13px; padding-left:8px; font-size:11px; font-family:'Open Sans Extrabold'; color:#848890; text-align:left; background:transparent; text-transform:uppercase; height:100%;}");
     insertToolBarBreak(navigationBar);
 
     //Export and Settings bar
@@ -532,7 +532,7 @@ void BitcoinGUI::createToolBars()
     extraFunctionsBar->setMovable(false);
     extraFunctionsBar->setFixedWidth(200);
     extraFunctionsBar->setFixedHeight(60);
-    extraFunctionsBar->setStyleSheet("QToolBar {border:0px;} QToolBar QToolButton:hover{color: #F37255;} QToolBar QToolButton:checked {color: #F37255;} QToolBar QToolButton{margin-bottom:25px; font-size:11px; font-family:'Open Sans Extrabold'; color:#33363B; text-align:right; background:transparent; text-transform:uppercase; height:100%; padding-left:20px;}");
+    extraFunctionsBar->setStyleSheet("QToolBar {border:0px;} QToolBar QToolButton:hover{color: #F37255;} QToolBar QToolButton:checked {color: #F37255;} QToolBar QToolButton{margin-bottom:13px; font-size:11px; font-family:'Open Sans Extrabold'; color:#33363B; text-align:right; background:transparent; text-transform:uppercase; height:100%; padding-left:20px;}");
     QWidget* extraSpacer = new QWidget();
     extraSpacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     extraFunctionsBar->addWidget(extraSpacer);
