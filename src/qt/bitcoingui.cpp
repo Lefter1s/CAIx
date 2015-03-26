@@ -871,21 +871,17 @@ void BitcoinGUI::changeEvent(QEvent *e)
 
 void BitcoinGUI::closeEvent(QCloseEvent *event)
 {
-#ifndef Q_OS_MAC
-        if(clientModel->getOptionsModel()->getMinimizeOnClose())
+    if(clientModel)
+    {
+#ifndef Q_OS_MAC // Ignored on Mac
+        if(!clientModel->getOptionsModel()->getMinimizeToTray() &&
+           !clientModel->getOptionsModel()->getMinimizeOnClose())
         {
-            event->ignore();
-            hide();
+            QApplication::quit();
         }
-        else
-        {
-            event->accept();
-            qApp->quit();
-        }
-
-#else
-    qApp->quit();
 #endif
+    }
+    QMainWindow::closeEvent(event);
 }
 
 void BitcoinGUI::askFee(qint64 nFeeRequired, bool *payFee)
@@ -1274,26 +1270,13 @@ void BitcoinGUI::showNormalIfMinimized(bool fToggleHidden)
         raise();
         activateWindow();
     }
-    else if(fToggleHidden && clientModel)
-    {
-        if(clientModel->getOptionsModel()->getMinimizeToTray())
-        {
-            hide();
-        }
-        else
-        {
-            setWindowState(Qt::WindowMinimized);
-        }
-    }
+    else if(fToggleHidden)
+        hide();
 }
 
 void BitcoinGUI::toggleHidden()
 {
-#ifdef Q_OS_MAC
-    this->hide();
-#else
     showNormalIfMinimized(true);
-#endif
 }
 
 void BitcoinGUI::mousePressEvent(QMouseEvent *event) {
