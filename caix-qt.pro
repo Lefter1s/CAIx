@@ -12,17 +12,17 @@ greaterThan(QT_MAJOR_VERSION, 4) {
     DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0
 }
 
-#win32:BOOST_LIB_SUFFIX=-mgw49-mt-s-1_57
-#win32:BOOST_INCLUDE_PATH=C:/deps/boost_1_57_0
-#win32:BOOST_LIB_PATH=C:/deps/boost_1_57_0/stage/lib
-#win32:BDB_INCLUDE_PATH=C:/deps/db-4.8.30.NC/build_unix
-#win32:BDB_LIB_PATH=C:/deps/db-4.8.30.NC/build_unix
-#win32:OPENSSL_INCLUDE_PATH=C:/deps/openssl-1.0.1j/include
-#win32:OPENSSL_LIB_PATH=C:/deps/openssl-1.0.1j/
-#win32:MINIUPNPC_INCLUDE_PATH=C:/deps/
-#win32:MINIUPNPC_LIB_PATH=C:/deps/miniupnpc
-#win32:QRENCODE_INCLUDE_PATH=C:/deps/qrencode-3.4.4
-#win32:QRENCODE_LIB_PATH=C:/deps/qrencode-3.4.4/.libs
+win32:BOOST_LIB_SUFFIX=-mgw49-mt-s-1_57
+win32:BOOST_INCLUDE_PATH=C:/deps/boost_1_57_0
+win32:BOOST_LIB_PATH=C:/deps/boost_1_57_0/stage/lib
+win32:BDB_INCLUDE_PATH=C:/deps/db-4.8.30.NC/build_unix
+win32:BDB_LIB_PATH=C:/deps/db-4.8.30.NC/build_unix
+win32:OPENSSL_INCLUDE_PATH=C:/deps/openssl-1.0.1j/include
+win32:OPENSSL_LIB_PATH=C:/deps/openssl-1.0.1j/
+win32:MINIUPNPC_INCLUDE_PATH=C:/deps/
+win32:MINIUPNPC_LIB_PATH=C:/deps/miniupnpc
+win32:QRENCODE_INCLUDE_PATH=C:/deps/qrencode-3.4.4
+win32:QRENCODE_LIB_PATH=C:/deps/qrencode-3.4.4/.libs
 
 #macx:BOOST_LIB_SUFFIX= -mt
 #macx:BOOST_INCLUDE_PATH=/usr/local/include
@@ -197,17 +197,6 @@ HEADERS += src/qt/bitcoingui.h \
     src/kernel.h \
     src/scrypt.h \
     src/pbkdf2.h \
-    src/zerocoin/Accumulator.h \
-    src/zerocoin/AccumulatorProofOfKnowledge.h \
-    src/zerocoin/Coin.h \
-    src/zerocoin/CoinSpend.h \
-    src/zerocoin/Commitment.h \
-    src/zerocoin/ParamGeneration.h \
-    src/zerocoin/Params.h \
-    src/zerocoin/SerialNumberSignatureOfKnowledge.h \
-    src/zerocoin/SpendMetaData.h \
-    src/zerocoin/ZeroTest.h \
-    src/zerocoin/Zerocoin.h \
     src/serialize.h \
     src/strlcpy.h \
     src/main.h \
@@ -344,17 +333,7 @@ SOURCES += src/qt/bitcoin.cpp src/qt/bitcoingui.cpp \
     src/scrypt-x86.S \
     src/scrypt-x86_64.S \
     src/scrypt.cpp \
-    src/pbkdf2.cpp \
-    src/zerocoin/Accumulator.cpp \
-    src/zerocoin/AccumulatorProofOfKnowledge.cpp \
-    src/zerocoin/Coin.cpp \
-    src/zerocoin/CoinSpend.cpp \
-    src/zerocoin/Commitment.cpp \
-    src/zerocoin/ParamGeneration.cpp \
-    src/zerocoin/Params.cpp \
-    src/zerocoin/SerialNumberSignatureOfKnowledge.cpp \
-    src/zerocoin/SpendMetaData.cpp \
-    src/zerocoin/ZeroTest.cpp
+    src/pbkdf2.cpp
 
 RESOURCES += \
     src/qt/bitcoin.qrc

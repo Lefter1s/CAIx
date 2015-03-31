@@ -10,7 +10,6 @@
 #include "util.h"
 #include "ui_interface.h"
 #include "checkpoints.h"
-#include "zerocoin/ZeroTest.h"
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
 #include <boost/filesystem/convenience.hpp>
@@ -751,16 +750,6 @@ bool AppInit2()
         return false;
     }
 
-    // ********************************************************* Testing Zerocoin
-
-
-    if (GetBoolArg("-zerotest", false))
-    {
-        printf("\n=== ZeroCoin tests start ===\n");
-        Test_RunAllTests();
-        printf("=== ZeroCoin tests end ===\n\n");
-    }
-
     // ********************************************************* Step 8: load wallet
 
     uiInterface.InitMessage(_("Loading wallet..."));
@@ -813,11 +802,11 @@ bool AppInit2()
         RandAddSeedPerfmon();
 
         CPubKey newDefaultKey;
-        if (!pwalletMain->GetKeyFromPool(newDefaultKey, false))
-            strErrors << _("Cannot initialize keypool") << "\n";
-        pwalletMain->SetDefaultKey(newDefaultKey);
-        if (!pwalletMain->SetAddressBookName(pwalletMain->vchDefaultKey.GetID(), ""))
-            strErrors << _("Cannot write default address") << "\n";
+        if (pwalletMain->GetKeyFromPool(newDefaultKey, false)) {
+            pwalletMain->SetDefaultKey(newDefaultKey);
+            if (!pwalletMain->SetAddressBookName(pwalletMain->vchDefaultKey.GetID(), ""))
+                strErrors << _("Cannot write default address") << "\n";
+        }
     }
 
     printf("%s", strErrors.str().c_str());
