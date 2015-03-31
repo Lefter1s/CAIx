@@ -68,7 +68,6 @@
 
 extern CWallet* pwalletMain;
 extern int64_t nLastCoinStakeSearchInterval;
-extern unsigned int nTargetSpacing;
 double GetPoSKernelPS();
 int convertmode = 0;
 
@@ -83,7 +82,8 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     aboutQtAction(0),
     trayIcon(0),
     notificator(0),
-    rpcConsole(0)
+    rpcConsole(0),
+    nWeight(0)
 {
     setFixedSize(1000, 600);
     setWindowFlags(Qt::FramelessWindowHint);
@@ -1288,12 +1288,26 @@ void BitcoinGUI::mouseMoveEvent(QMouseEvent *event) {
     move(event->globalX()-m_nMouseClick_X_Coordinate,event->globalY()-m_nMouseClick_Y_Coordinate);
 }
 
+void BitcoinGUI::updateWeight()
+{
+    if (!pwalletMain)
+        return;
+
+    TRY_LOCK(cs_main, lockMain);
+    if (!lockMain)
+        return;
+
+    TRY_LOCK(pwalletMain->cs_wallet, lockWallet);
+    if (!lockWallet)
+        return;
+
+    uint64_t nMinWeight = 0, nMaxWeight = 0;
+    pwalletMain->GetStakeWeight(*pwalletMain, nMinWeight, nMaxWeight, nWeight);
+}
 
 void BitcoinGUI::updateStakingIcon()
 {
-    uint64_t nMinWeight = 0, nMaxWeight = 0, nWeight = 0;
-    if (pwalletMain)
-        pwalletMain->GetStakeWeight(*pwalletMain, nMinWeight, nMaxWeight, nWeight);
+    updateWeight();
 
     if (nLastCoinStakeSearchInterval && nWeight)
     {
