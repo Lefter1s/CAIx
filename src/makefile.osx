@@ -7,13 +7,14 @@
 # Originally by Laszlo Hanyecz (solar@heliacal.net)
 
 CXX=llvm-g++
-DEPSDIR=/opt/local
+DEPSDIR=/usr/local
 
 INCLUDEPATHS= \
  -I"$(CURDIR)" \
  -I"$(CURDIR)"/obj \
  -I"$(DEPSDIR)/include" \
- -I"$(DEPSDIR)/include/db48"
+ -I"$(DEPSDIR)/Cellar/boost/1.57.0/include" \
+ -I"$(DEPSDIR)/Cellar/berkeley-db4/4.8.30/include"
 
 LIBPATHS= \
  -L"$(DEPSDIR)/lib" \
@@ -161,5 +162,6 @@ clean:
 	-rm -f obj/*.P
 	-rm -f obj/zerocoin/*.P
 	-rm -f obj/build.h
+	-cd leveldb && $(MAKE) clean || true
 
 FORCE:
