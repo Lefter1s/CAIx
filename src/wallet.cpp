@@ -852,7 +852,7 @@ int CWallet::ScanForWalletTransaction(const uint256& hashTx)
 {
     CTransaction tx;
     tx.ReadFromDisk(COutPoint(hashTx, 0));
-    if (AddToWalletIfInvolvingMe(tx, NULL, true, true))
+    if (AddToWalletIfInvolvingMe(tx, NULL, true))
         return 1;
     return 0;
 }
