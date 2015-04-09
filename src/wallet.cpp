@@ -490,11 +490,10 @@ bool CWallet::AddToWallet(const CWalletTx& wtxIn)
                 return false;
 #ifndef QT_GUI
         // If default receiving address gets used, replace it with a new one
-        if (vchDefaultKey.IsValid()) {
-            CScript scriptDefaultKey;
-            scriptDefaultKey.SetDestination(vchDefaultKey.GetID());
-            BOOST_FOREACH(const CTxOut& txout, wtx.vout)
-            {
+        CScript scriptDefaultKey;
+        scriptDefaultKey.SetDestination(vchDefaultKey.GetID());
+        BOOST_FOREACH(const CTxOut& txout, wtx.vout)
+        {
             if (txout.scriptPubKey == scriptDefaultKey)
             {
                 CPubKey newDefaultKey;
@@ -528,7 +527,7 @@ bool CWallet::AddToWallet(const CWalletTx& wtxIn)
 // Add a transaction to the wallet, or update it.
 // pblock is optional, but should be provided if the transaction is known to be in a block.
 // If fUpdate is true, existing transactions will be updated.
-bool CWallet::AddToWalletIfInvolvingMe(const CTransaction& tx, const CBlock* pblock, bool fUpdate)
+bool CWallet::AddToWalletIfInvolvingMe(const CTransaction& tx, const CBlock* pblock, bool fUpdate, bool fFindBlock)
 {
     uint256 hash = tx.GetHash();
     {
@@ -852,7 +851,7 @@ int CWallet::ScanForWalletTransaction(const uint256& hashTx)
 {
     CTransaction tx;
     tx.ReadFromDisk(COutPoint(hashTx, 0));
-    if (AddToWalletIfInvolvingMe(tx, NULL, true))
+    if (AddToWalletIfInvolvingMe(tx, NULL, true, true))
         return 1;
     return 0;
 }
